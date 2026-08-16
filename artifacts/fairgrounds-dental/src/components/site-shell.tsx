@@ -157,7 +157,7 @@ export function UrgentBar() {
 export function MobileActionBar() {
   return (
     <div
-      className="fixed inset-x-0 bottom-0 z-50 border-t border-border/80 bg-background/95 p-2 pb-[calc(.5rem+env(safe-area-inset-bottom))] shadow-[0_-8px_24px_hsl(201_37%_18%/.08)] backdrop-blur-md lg:hidden"
+      className="fixed inset-x-0 bottom-0 z-50 border-t border-border/80 bg-background/95 px-4 pt-3 pb-[calc(.75rem+env(safe-area-inset-bottom))] shadow-[0_-8px_24px_hsl(201_37%_18%/.08)] backdrop-blur-md lg:hidden"
       aria-label="Quick actions"
     >
       <div className="mx-auto grid max-w-md grid-cols-2 gap-2">

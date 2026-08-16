@@ -67,6 +67,8 @@
   --shadow-soft: 0 12px 34px hsl(201 37% 18% / 0.1);
   --shadow-card:
     0 1px 0 hsl(201 37% 18% / 0.05), 0 10px 24px hsl(201 37% 18% / 0.07);
+  --site-gutter: clamp(1.25rem, 4vw, 3rem);
+  --site-max-width: 1200px;
   --tracking-normal: 0em;
   --spacing: 0.25rem;
 }
@@ -103,6 +105,7 @@
     @apply font-sans antialiased bg-background text-foreground;
     font-size: 1.125rem;
     line-height: 1.7;
+    overflow-wrap: break-word;
   }
   p {
     line-height: 1.7;
@@ -121,8 +124,11 @@
     text-wrap: balance;
   }
   .container-wide {
-    width: min(100% - 2rem, 1200px);
+    width: min(calc(100% - (var(--site-gutter) * 2)), var(--site-max-width));
     margin-inline: auto;
+  }
+  .safe-inline {
+    padding-inline: var(--site-gutter);
   }
   .focus-ring {
     @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background;
