@@ -240,6 +240,59 @@ function TrustStrip() {
   );
 }
 
+function AdaLogoStrip() {
+  return (
+    <section
+      className="border-b border-border bg-background"
+      aria-label="ADA logos"
+    >
+      <div className="container-wide py-6">
+        <div className="grid gap-5 rounded-lg border border-border bg-card p-5 shadow-[var(--shadow-card)] lg:grid-cols-[.72fr_1.28fr] lg:items-center">
+          <div>
+            <p className="text-sm font-bold uppercase text-primary">
+              Professional standards
+            </p>
+            <p className="mt-2 text-base leading-7 text-muted-foreground">
+              ADA dental resources and the official dental emblem help signal a
+              commitment to careful, standards-minded care.
+            </p>
+          </div>
+          <div className="grid gap-3 sm:grid-cols-2">
+            <a
+              href="https://www.ada.org/"
+              target="_blank"
+              rel="noreferrer"
+              data-testid="link-ada-wordmark"
+              className="focus-ring flex min-h-24 items-center justify-center rounded-lg border border-border bg-background px-5 py-4 transition-colors hover:bg-secondary/45"
+            >
+              <img
+                src="/images/affiliations/ada-wordmark.svg"
+                alt="American Dental Association"
+                className="max-h-12 w-full max-w-[260px] object-contain"
+                loading="lazy"
+              />
+            </a>
+            <a
+              href="https://commons.ada.org/insignia/4/"
+              target="_blank"
+              rel="noreferrer"
+              data-testid="link-ada-dental-emblem"
+              className="focus-ring flex min-h-24 items-center justify-center rounded-lg border border-border bg-background px-5 py-4 transition-colors hover:bg-secondary/45"
+            >
+              <img
+                src="/images/affiliations/ada-dental-emblem.png"
+                alt="Official dental emblem from the ADA Library and Archives"
+                className="max-h-20 w-auto object-contain"
+                loading="lazy"
+              />
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function ServicePreview() {
   return (
     <section className="container-wide py-20 sm:py-28">
@@ -582,6 +635,7 @@ export function HomePage() {
           </div>
         </section>
         <TrustStrip />
+        <AdaLogoStrip />
         <ServicePreview />
         <DoctorMini />
         <section className="bg-accent/20 py-20 sm:py-24">

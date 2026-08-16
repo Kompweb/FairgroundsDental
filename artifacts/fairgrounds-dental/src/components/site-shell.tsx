@@ -33,7 +33,7 @@ export function Logo() {
       <img
         src="/images/fairgroundsdental-logo.png"
         alt="Fairgrounds Dental Practice"
-        className="h-12 w-auto max-w-[180px] sm:h-14 sm:max-w-[220px]"
+        className="h-14 w-auto max-w-[210px] sm:h-16 sm:max-w-[260px] lg:h-[72px] lg:max-w-[300px]"
       />
     </Link>
   );
@@ -44,7 +44,7 @@ export function Header() {
   const [location] = useLocation();
   return (
     <header className="sticky top-0 z-40 border-b border-border/70 bg-background/90 backdrop-blur-md">
-      <div className="container-wide flex min-h-[82px] items-center justify-between gap-4">
+      <div className="container-wide flex min-h-[92px] items-center justify-between gap-4">
         <Logo />
         <nav
           className="hidden items-center gap-5 xl:gap-6 lg:flex"
