@@ -84,6 +84,22 @@ const testimonials = [
   },
 ];
 
+const drAyoubBio = [
+  "Dr. Ayoub Al Alousi is a highly dedicated general dentist recognized for his clinical confidence, efficiency, and commitment to delivering refined, patient-centered care. He first earned his dental degree in Dubai in 2015, completed an Advanced Education in General Dentistry (AEGD) program, and later obtained his Doctor of Dental Surgery degree from Virginia Commonwealth University School of Dentistry.",
+  "With a strong foundation in comprehensive dentistry and experience across diverse clinical settings, Dr. Ayoub is known for his ability to approach each case with clarity, precision, and sound judgment. His focus is on delivering care that is not only effective, but also comfortable, consistent, and dependable.",
+  "Guided by the belief that excellence is not a skill, but an attitude, Dr. Ayoub emphasizes honest communication, thoughtful treatment planning, and an unwavering attention to detail. He prioritizes what truly matters for each patient, ensuring a level of care that feels both professional and personal.",
+  "Patients value his calm, decisive approach and his ability to make dentistry feel straightforward and manageable, building long-term trust through reliability and results.",
+  "Outside the office, Dr. Ayoub enjoys traveling, playing soccer, and spending time with his wife and son.",
+];
+
+const drWidBio = [
+  "Dr. Wid Al Hussain is a highly accomplished general dentist known for her precision, refined clinical approach, and dedication to delivering exceptional patient-centered care. She earned her dental degree in Dubai in 2015 and later obtained her Doctor of Dental Surgery degree from Virginia Commonwealth University School of Dentistry, where she graduated at the top of her class.",
+  "During her training, Dr. Wid received multiple distinctions in prosthodontics and esthetic dentistry and was inducted into Omicron Kappa Upsilon (OKU), the national dental honor society, recognizing her academic excellence and clinical achievement.",
+  "Dr. Wid is known for her meticulous attention to detail and her calm, thoughtful approach to patient care. She prioritizes comfort, clarity, and a seamless experience, ensuring that every patient feels at ease and confident throughout their visit.",
+  "Guided by a commitment to excellence and consistency, she delivers care that is precise, dependable, and tailored to each individual, fostering long-term relationships built on trust and respect.",
+  "Outside the office, Dr. Wid enjoys traveling, horse riding, gardening, and most of all cherishing moments with family.",
+];
+
 function ButtonLink({
   href,
   children,
@@ -316,12 +332,14 @@ function DoctorMini() {
 }
 
 function DoctorCard({
+  description,
   initials,
   imageAlt,
   imageSrc,
   name,
   coral = false,
 }: {
+  description?: string;
   initials: string;
   imageAlt?: string;
   imageSrc?: string;
@@ -350,10 +368,66 @@ function DoctorCard({
         <p className="text-sm font-bold uppercase text-primary">Dentist</p>
         <h3 className="mt-2 text-xl font-bold">{name}, DDS</h3>
         <p className="mt-2 text-base leading-7 text-muted-foreground">
-          A thoughtful partner in your care who explains treatment clearly.
+          {description ??
+            "A thoughtful partner in your care who explains treatment clearly."}
         </p>
       </div>
     </div>
+  );
+}
+
+function DoctorProfileAyoub() {
+  return (
+    <article className="mt-12 grid gap-6 lg:grid-cols-[.42fr_.58fr] lg:items-start">
+      <DoctorCard
+        description="General dentist with AEGD training and a DDS from Virginia Commonwealth University School of Dentistry."
+        initials="AA"
+        imageAlt="Ayoub Al Alousi, DDS"
+        imageSrc="/images/doctors/dr-ayoub.jpg"
+        name="Ayoub Al Alousi"
+      />
+      <div className="rounded-lg border border-border bg-card p-6 shadow-[var(--shadow-card)] sm:p-8">
+        <p className="text-sm font-bold uppercase text-primary">
+          Background and Credentials
+        </p>
+        <h3 className="mt-3 text-3xl font-bold leading-tight text-foreground">
+          Dr. Ayoub Al Alousi, DDS
+        </h3>
+        <div className="mt-6 space-y-4 text-base leading-8 text-muted-foreground">
+          {drAyoubBio.map((paragraph) => (
+            <p key={paragraph}>{paragraph}</p>
+          ))}
+        </div>
+      </div>
+    </article>
+  );
+}
+
+function DoctorProfileWid() {
+  return (
+    <article className="mt-6 grid gap-6 lg:grid-cols-[.42fr_.58fr] lg:items-start">
+      <DoctorCard
+        description="General dentist, VCU School of Dentistry graduate, and OKU dental honor society member."
+        initials="WH"
+        imageAlt="Wid Al Hussain, DDS"
+        imageSrc="/images/doctors/dr-wid.jpg"
+        name="Wid Al Hussain"
+        coral
+      />
+      <div className="rounded-lg border border-border bg-card p-6 shadow-[var(--shadow-card)] sm:p-8">
+        <p className="text-sm font-bold uppercase text-primary">
+          Background and Credentials
+        </p>
+        <h3 className="mt-3 text-3xl font-bold leading-tight text-foreground">
+          Wid Al Hussain, DDS, Vallejo Dentist
+        </h3>
+        <div className="mt-6 space-y-4 text-base leading-8 text-muted-foreground">
+          {drWidBio.map((paragraph) => (
+            <p key={paragraph}>{paragraph}</p>
+          ))}
+        </div>
+      </div>
+    </article>
   );
 }
 
@@ -645,21 +719,8 @@ export function AboutPage() {
               title="Skilled clinicians, steady guides."
               body="Our doctors bring a team-oriented approach to general, family, cosmetic, and restorative dentistry."
             />
-            <div className="mt-12 grid max-w-3xl gap-6 sm:grid-cols-2">
-              <DoctorCard
-                initials="AA"
-                imageAlt="Ayoub Al Alousi, DDS"
-                imageSrc="/images/doctors/dr-ayoub.jpg"
-                name="Ayoub Al Alousi"
-              />
-              <DoctorCard
-                initials="WH"
-                imageAlt="Wid Al Hussain, DDS"
-                imageSrc="/images/doctors/dr-wid.jpg"
-                name="Wid Al Hussain"
-                coral
-              />
-            </div>
+            <DoctorProfileAyoub />
+            <DoctorProfileWid />
           </div>
         </section>
         <section className="container-wide py-20 text-center sm:py-28">
