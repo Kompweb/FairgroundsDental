@@ -1,5 +1,5 @@
 import { type FormEvent, useState } from "react";
-import { Check, LoaderCircle, Send } from "lucide-react";
+import { CalendarDays, Check, Clock3, LoaderCircle, Send } from "lucide-react";
 
 const services = [
   "General or family dentistry",
@@ -11,14 +11,44 @@ const services = [
   "Something else",
 ];
 
+const timeWindows = [
+  { label: "Morning", detail: "8am-11am", value: "Morning, 8am-11am" },
+  { label: "Midday", detail: "11am-1pm", value: "Midday, 11am-1pm" },
+  { label: "Afternoon", detail: "1pm-4pm", value: "Afternoon, 1pm-4pm" },
+  { label: "First available", detail: "Any opening", value: "First available" },
+];
+
+function formatInputDate(date: Date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+function getMinimumAppointmentDate() {
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  return formatInputDate(tomorrow);
+}
+
+function isClosedOfficeDay(value: string) {
+  const [year, month, day] = value.split("-").map(Number);
+  const selectedDate = new Date(year, month - 1, day);
+  const dayOfWeek = selectedDate.getDay();
+  return dayOfWeek === 0 || dayOfWeek === 5 || dayOfWeek === 6;
+}
+
 export function AppointmentForm({ compact = false }: { compact?: boolean }) {
   const [status, setStatus] = useState<"idle" | "submitting" | "success">(
     "idle",
   );
+  const minimumAppointmentDate = getMinimumAppointmentDate();
   const [form, setForm] = useState({
     name: "",
     phone: "",
     email: "",
+    preferredDate: "",
+    preferredTime: "",
     service: "",
     message: "",
   });
@@ -39,6 +69,14 @@ export function AppointmentForm({ compact = false }: { compact?: boolean }) {
     if (!form.email.trim()) nextErrors.email = "Please add your email.";
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
       nextErrors.email = "Please check this email.";
+    if (form.preferredDate) {
+      if (form.preferredDate < minimumAppointmentDate) {
+        nextErrors.preferredDate = "Please choose a future office day.";
+      } else if (isClosedOfficeDay(form.preferredDate)) {
+        nextErrors.preferredDate =
+          "Please choose Monday through Thursday, or call us for help.";
+      }
+    }
     if (!form.service) nextErrors.service = "Please choose a service.";
     if (Object.keys(nextErrors).length > 0) {
       setErrors(nextErrors);
@@ -61,7 +99,7 @@ export function AppointmentForm({ compact = false }: { compact?: boolean }) {
         </h3>
         <p className="mt-3 max-w-md text-base leading-7 text-muted-foreground">
           Thank you, {form.name.split(" ")[0]}. Our team will reach out during
-          office hours to find a time that works for you.
+          office hours to confirm the closest available appointment time.
         </p>
         <button
           type="button"
@@ -72,6 +110,8 @@ export function AppointmentForm({ compact = false }: { compact?: boolean }) {
               name: "",
               phone: "",
               email: "",
+              preferredDate: "",
+              preferredTime: "",
               service: "",
               message: "",
             });
@@ -157,6 +197,106 @@ export function AppointmentForm({ compact = false }: { compact?: boolean }) {
           )}
         </label>
       </div>
+      <section
+        className="rounded-lg border border-border bg-secondary/55 p-4 sm:p-5"
+        aria-labelledby="appointment-time-heading"
+      >
+        <div className="flex items-start gap-3">
+          <span className="grid size-11 shrink-0 place-items-center rounded-lg bg-background text-primary">
+            <CalendarDays className="size-6" aria-hidden="true" />
+          </span>
+          <div>
+            <h3
+              id="appointment-time-heading"
+              className="text-xl font-bold leading-snug text-foreground"
+            >
+              Preferred appointment time
+            </h3>
+            <p className="mt-1 text-base leading-7 text-muted-foreground">
+              Pick a day and time window if you have one in mind. We’ll call to
+              confirm the exact opening.
+            </p>
+          </div>
+        </div>
+        <div className="mt-5 grid gap-5 lg:grid-cols-[.9fr_1.1fr]">
+          <label
+            htmlFor="appointment-date"
+            className="text-base font-semibold text-foreground"
+          >
+            Preferred date{" "}
+            <span className="font-normal text-muted-foreground">
+              (optional)
+            </span>
+            <input
+              id="appointment-date"
+              type="date"
+              min={minimumAppointmentDate}
+              aria-invalid={Boolean(errors.preferredDate)}
+              aria-describedby={
+                errors.preferredDate
+                  ? "appointment-date-help appointment-date-error"
+                  : "appointment-date-help"
+              }
+              value={form.preferredDate}
+              onChange={(e) => update("preferredDate", e.target.value)}
+              data-testid="input-preferred-date"
+              className={`${inputClass} mt-2`}
+            />
+            <span
+              id="appointment-date-help"
+              className="mt-2 block text-sm font-medium text-muted-foreground"
+            >
+              Office visits are available Monday through Thursday.
+            </span>
+            {errors.preferredDate && (
+              <span
+                id="appointment-date-error"
+                className="mt-2 block text-sm font-medium text-destructive"
+              >
+                {errors.preferredDate}
+              </span>
+            )}
+          </label>
+          <fieldset>
+            <legend className="flex items-center gap-2 text-base font-semibold text-foreground">
+              <Clock3 className="size-5 text-accent" aria-hidden="true" />
+              Best time to come in{" "}
+              <span className="font-normal text-muted-foreground">
+                (optional)
+              </span>
+            </legend>
+            <div className="mt-2 grid gap-2 sm:grid-cols-2">
+              {timeWindows.map((window) => {
+                const selected = form.preferredTime === window.value;
+                return (
+                  <label key={window.value} className="block cursor-pointer">
+                    <input
+                      type="radio"
+                      name="appointment-preferred-time"
+                      value={window.value}
+                      checked={selected}
+                      onChange={(e) =>
+                        update("preferredTime", e.currentTarget.value)
+                      }
+                      className="peer sr-only"
+                    />
+                    <span
+                      className={`flex min-h-16 flex-col justify-center rounded-lg border px-4 py-3 text-base transition-colors peer-focus-visible:ring-2 peer-focus-visible:ring-primary peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-background ${selected ? "border-primary bg-primary text-primary-foreground" : "border-input bg-background text-foreground hover:bg-card"}`}
+                    >
+                      <span className="font-bold">{window.label}</span>
+                      <span
+                        className={`text-sm font-medium ${selected ? "text-primary-foreground/85" : "text-muted-foreground"}`}
+                      >
+                        {window.detail}
+                      </span>
+                    </span>
+                  </label>
+                );
+              })}
+            </div>
+          </fieldset>
+        </div>
+      </section>
       <div className="grid gap-4 sm:grid-cols-2">
         <label
           htmlFor="appointment-email"

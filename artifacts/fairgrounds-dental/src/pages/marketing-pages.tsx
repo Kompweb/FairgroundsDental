@@ -11,6 +11,7 @@ import {
   CreditCard,
   HeartHandshake,
   MapPin,
+  Navigation,
   Phone,
   Quote,
   ShieldCheck,
@@ -22,6 +23,12 @@ import {
 import { AppointmentForm } from "@/components/appointment-form";
 import { PageMeta } from "@/components/seo";
 import { PageIntro, SectionHeading } from "@/components/site-shell";
+
+const googleMapsDirectionsUrl =
+  "https://www.google.com/maps/dir/?api=1&destination=200+Fairgrounds+Dr%2C+Vallejo%2C+CA+94589";
+
+const officeStreetViewUrl =
+  "https://maps.google.com/maps?layer=c&cbll=38.123570,-122.230946&cbp=11,285,0,0,0&output=svembed";
 
 const services = [
   {
@@ -101,22 +108,52 @@ function ButtonLink({
 function HeroVisual() {
   return (
     <aside
-      className="mx-auto w-full max-w-[470px] rounded-lg border border-border bg-card p-5 shadow-[var(--shadow-soft)] sm:p-7"
-      aria-label="Helpful appointment information"
+      className="mx-auto w-full max-w-[520px] overflow-hidden rounded-lg border border-border bg-card shadow-[var(--shadow-soft)]"
+      aria-label="Fairgrounds Dental office location"
     >
-      <div className="rounded-lg bg-secondary p-5">
+      <div className="relative aspect-[4/3] min-h-[300px] bg-secondary">
+        <iframe
+          title="Street view of Fairgrounds Dental Practice at 200 Fairgrounds Drive"
+          src={officeStreetViewUrl}
+          className="absolute inset-0 size-full border-0"
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+        />
+      </div>
+      <div className="border-t border-border p-5 sm:p-6">
         <p className="text-sm font-bold uppercase text-primary">
-          Helpful visit details
+          Visit us in Vallejo
         </p>
         <h2 className="mt-2 text-2xl font-bold leading-tight text-foreground">
-          Call us first if you are unsure what you need.
+          Fairgrounds Dental Practice
         </h2>
-        <p className="mt-3 text-base leading-7 text-muted-foreground">
-          Our front desk can help with symptoms, insurance questions, and
-          appointment timing.
+        <p className="mt-3 flex gap-3 text-base leading-7 text-muted-foreground">
+          <MapPin className="mt-1 size-5 shrink-0 text-accent" />
+          <span>
+            200 Fairgrounds Dr
+            <br />
+            Vallejo, CA 94589
+          </span>
         </p>
+        <div className="mt-5 grid gap-3 sm:grid-cols-2">
+          <a
+            href={googleMapsDirectionsUrl}
+            target="_blank"
+            rel="noreferrer"
+            data-testid="link-hero-directions"
+            className="focus-ring inline-flex min-h-14 items-center justify-center gap-2 rounded-lg bg-primary px-4 text-base font-bold text-primary-foreground"
+          >
+            <Navigation className="size-5" /> Directions
+          </a>
+          <a
+            href="tel:7075528195"
+            className="focus-ring inline-flex min-h-14 items-center justify-center gap-2 rounded-lg border border-primary/25 bg-background px-4 text-base font-bold text-primary"
+          >
+            <Phone className="size-5" /> Call office
+          </a>
+        </div>
       </div>
-      <div className="mt-5 divide-y divide-border rounded-lg border border-border bg-background">
+      <div className="divide-y divide-border border-t border-border bg-background">
         {[
           [
             "Same-day emergency visits",
@@ -142,20 +179,6 @@ function HeroVisual() {
             </div>
           </div>
         ))}
-      </div>
-      <div className="mt-5 grid gap-3 sm:grid-cols-2">
-        <a
-          href="tel:7075528195"
-          className="focus-ring inline-flex min-h-14 items-center justify-center gap-2 rounded-lg bg-primary px-4 text-base font-bold text-primary-foreground"
-        >
-          <Phone className="size-5" /> Call office
-        </a>
-        <Link
-          href="/contact"
-          className="focus-ring inline-flex min-h-14 items-center justify-center gap-2 rounded-lg border border-primary/25 bg-background px-4 text-base font-bold text-primary"
-        >
-          <CalendarDays className="size-5" /> Appointment
-        </Link>
       </div>
     </aside>
   );
@@ -257,8 +280,19 @@ function DoctorMini() {
           body="Dr. Ayoub Al Alousi and Dr. Wid Al Hussain believe good dentistry starts with a conversation. You’ll always know what we see, what we recommend, and why."
         />
         <div className="grid gap-5 sm:grid-cols-2">
-          <DoctorCard initials="AA" name="Ayoub Al Alousi" />
-          <DoctorCard initials="WH" name="Wid Al Hussain" coral />
+          <DoctorCard
+            initials="AA"
+            imageAlt="Ayoub Al Alousi, DDS"
+            imageSrc="/images/doctors/dr-ayoub.jpg"
+            name="Ayoub Al Alousi"
+          />
+          <DoctorCard
+            initials="WH"
+            imageAlt="Wid Al Hussain, DDS"
+            imageSrc="/images/doctors/dr-wid.jpg"
+            name="Wid Al Hussain"
+            coral
+          />
         </div>
         <div className="flex flex-wrap gap-4 lg:col-start-2">
           <Link
@@ -283,21 +317,34 @@ function DoctorMini() {
 
 function DoctorCard({
   initials,
+  imageAlt,
+  imageSrc,
   name,
   coral = false,
 }: {
   initials: string;
+  imageAlt?: string;
+  imageSrc?: string;
   name: string;
   coral?: boolean;
 }) {
   return (
     <div className="overflow-hidden rounded-lg border border-border bg-card">
       <div
-        className={`flex min-h-40 items-center justify-center p-6 ${coral ? "bg-accent/35" : "bg-secondary"}`}
+        className={`flex aspect-[4/3] min-h-48 items-center justify-center overflow-hidden ${coral ? "bg-accent/35" : "bg-secondary"}`}
       >
-        <span className="grid size-24 place-items-center rounded-lg bg-background text-3xl font-bold text-primary shadow-sm">
-          {initials}
-        </span>
+        {imageSrc ? (
+          <img
+            src={imageSrc}
+            alt={imageAlt ?? `${name}, DDS`}
+            className="size-full object-cover object-top"
+            loading="lazy"
+          />
+        ) : (
+          <span className="grid size-24 place-items-center rounded-lg bg-background text-3xl font-bold text-primary shadow-sm">
+            {initials}
+          </span>
+        )}
       </div>
       <div className="p-6">
         <p className="text-sm font-bold uppercase text-primary">Dentist</p>
@@ -362,6 +409,15 @@ function LocationBlock() {
           />
           <div className="mt-8 flex flex-wrap gap-3">
             <ButtonLink href="/contact">Plan your visit</ButtonLink>
+            <a
+              href={googleMapsDirectionsUrl}
+              target="_blank"
+              rel="noreferrer"
+              data-testid="link-home-location-directions"
+              className="focus-ring inline-flex min-h-14 items-center gap-2 rounded-lg bg-accent px-6 py-3 text-base font-bold text-accent-foreground transition-colors hover:bg-accent/85"
+            >
+              <Navigation className="size-5" /> Directions
+            </a>
             <a
               href="tel:7075528195"
               data-testid="link-home-location-call"
@@ -590,8 +646,19 @@ export function AboutPage() {
               body="Our doctors bring a team-oriented approach to general, family, cosmetic, and restorative dentistry."
             />
             <div className="mt-12 grid max-w-3xl gap-6 sm:grid-cols-2">
-              <DoctorCard initials="AA" name="Ayoub Al Alousi" />
-              <DoctorCard initials="WH" name="Wid Al Hussain" coral />
+              <DoctorCard
+                initials="AA"
+                imageAlt="Ayoub Al Alousi, DDS"
+                imageSrc="/images/doctors/dr-ayoub.jpg"
+                name="Ayoub Al Alousi"
+              />
+              <DoctorCard
+                initials="WH"
+                imageAlt="Wid Al Hussain, DDS"
+                imageSrc="/images/doctors/dr-wid.jpg"
+                name="Wid Al Hussain"
+                coral
+              />
             </div>
           </div>
         </section>
@@ -976,13 +1043,31 @@ export function ContactPage() {
                   </strong>
                 </span>
               </a>
-              <div className="flex items-start gap-4 p-5">
-                <MapPin className="mt-1 size-6 shrink-0 text-accent" />
-                <p className="text-base leading-7">
-                  <strong className="block">200 Fairgrounds Dr</strong>Vallejo,
-                  CA 94589
-                </p>
-              </div>
+              <a
+                href={googleMapsDirectionsUrl}
+                target="_blank"
+                rel="noreferrer"
+                data-testid="link-contact-directions-card"
+                className="focus-ring flex items-start gap-4 rounded-lg border border-border bg-card p-5 transition-colors hover:bg-secondary"
+              >
+                <span className="grid size-12 place-items-center rounded-lg bg-accent/40 text-primary">
+                  <MapPin className="size-6" />
+                </span>
+                <span className="text-base leading-7">
+                  <span className="block text-sm font-bold uppercase text-muted-foreground">
+                    Office location
+                  </span>
+                  <strong className="mt-1 block text-xl text-primary">
+                    200 Fairgrounds Dr
+                  </strong>
+                  <span className="block text-foreground">
+                    Vallejo, CA 94589
+                  </span>
+                  <span className="mt-2 inline-flex items-center gap-2 text-sm font-bold text-primary">
+                    Open Google Maps <Navigation className="size-4" />
+                  </span>
+                </span>
+              </a>
               <div className="flex items-start gap-4 p-5">
                 <Clock3 className="mt-1 size-6 shrink-0 text-accent" />
                 <p className="text-base leading-7">
@@ -1008,6 +1093,25 @@ export function ContactPage() {
           </div>
         </section>
         <section className="container-wide pb-20 sm:pb-28">
+          <div className="mb-5 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <p className="text-sm font-bold uppercase text-primary">
+                Directions
+              </p>
+              <h2 className="mt-2 text-3xl font-bold leading-tight text-foreground">
+                Open the route before you leave.
+              </h2>
+            </div>
+            <a
+              href={googleMapsDirectionsUrl}
+              target="_blank"
+              rel="noreferrer"
+              data-testid="link-contact-map-directions"
+              className="focus-ring inline-flex min-h-14 items-center justify-center gap-2 rounded-lg bg-primary px-6 py-3 text-base font-bold text-primary-foreground transition-colors hover:bg-primary/90"
+            >
+              <Navigation className="size-5" /> Google Maps directions
+            </a>
+          </div>
           <div className="overflow-hidden rounded-lg border border-border bg-secondary">
             <iframe
               title="Map showing Fairgrounds Dental Practice in Vallejo"

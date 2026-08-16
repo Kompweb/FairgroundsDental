@@ -6,6 +6,7 @@ import {
   Clock3,
   MapPin,
   Menu,
+  Navigation,
   Phone,
   X,
 } from "lucide-react";
@@ -19,26 +20,21 @@ const navItems = [
   { href: "/contact", label: "Contact" },
 ];
 
+const googleMapsDirectionsUrl =
+  "https://www.google.com/maps/dir/?api=1&destination=200+Fairgrounds+Dr%2C+Vallejo%2C+CA+94589";
+
 export function Logo() {
   return (
     <Link
       href="/"
-      className="focus-ring inline-flex items-center gap-3"
+      className="focus-ring inline-flex shrink-0 items-center"
       data-testid="link-logo"
     >
-      <span className="grid size-10 place-items-center rounded-[13px] bg-primary text-primary-foreground shadow-sm">
-        <span className="relative block h-5 w-4 rounded-b-[9px] rounded-t-[12px] bg-accent">
-          <span className="absolute -bottom-1 left-1/2 size-2 -translate-x-1/2 rounded-full bg-primary" />
-        </span>
-      </span>
-      <span className="leading-none">
-        <span className="block text-sm font-bold text-primary">
-          Fairgrounds
-        </span>
-        <span className="mt-1 block text-sm font-medium text-muted-foreground">
-          Dental Practice
-        </span>
-      </span>
+      <img
+        src="/images/fairgroundsdental-logo.png"
+        alt="Fairgrounds Dental Practice"
+        className="h-12 w-auto max-w-[180px] sm:h-14 sm:max-w-[220px]"
+      />
     </Link>
   );
 }
@@ -89,10 +85,14 @@ export function Header() {
           aria-label={open ? "Close menu" : "Open menu"}
           aria-expanded={open}
           data-testid="button-mobile-menu"
-          className="focus-ring grid size-11 place-items-center rounded-xl text-foreground lg:hidden"
+          className="focus-ring grid size-[52px] shrink-0 place-items-center rounded-lg border border-primary/25 bg-secondary text-primary shadow-sm lg:hidden"
           onClick={() => setOpen(!open)}
         >
-          {open ? <X className="size-6" /> : <Menu className="size-6" />}
+          {open ? (
+            <X className="size-8" strokeWidth={2.75} />
+          ) : (
+            <Menu className="size-8" strokeWidth={2.75} />
+          )}
         </button>
       </div>
       {open && (
@@ -228,6 +228,16 @@ export function Footer() {
               <br />
               Vallejo, CA 94589
             </p>
+            <a
+              href={googleMapsDirectionsUrl}
+              target="_blank"
+              rel="noreferrer"
+              data-testid="link-footer-directions"
+              className="focus-ring inline-flex min-h-11 items-center gap-2 rounded-lg border border-background/15 px-3 py-2 text-sm font-bold text-background transition-colors hover:bg-background/10"
+            >
+              <Navigation className="size-4 text-accent" />
+              Google Maps directions
+            </a>
             <p className="flex gap-3">
               <Clock3 className="mt-1 size-4 shrink-0 text-accent" />
               Mon–Thu · 8am–5pm
