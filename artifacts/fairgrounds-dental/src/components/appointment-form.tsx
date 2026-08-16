@@ -1,20 +1,29 @@
-import { FormEvent, useState } from 'react';
+import { type FormEvent, useState } from 'react';
 import { Check, LoaderCircle, Send } from 'lucide-react';
 
 const services = ['General or family dentistry', 'Exam and cleaning', 'Cosmetic dentistry', 'Orthodontics', 'Same-day crown', 'Dental emergency', 'Something else'];
 
 export function AppointmentForm({ compact = false }: { compact?: boolean }) {
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success'>('idle');
-  const [error, setError] = useState('');
   const [form, setForm] = useState({ name: '', phone: '', email: '', service: '', message: '' });
-  const update = (key: keyof typeof form, value: string) => setForm((current) => ({ ...current, [key]: value }));
+  const [errors, setErrors] = useState<Partial<Record<keyof typeof form, string>>>({});
+  const update = (key: keyof typeof form, value: string) => {
+    setForm((current) => ({ ...current, [key]: value }));
+    setErrors((current) => ({ ...current, [key]: undefined }));
+  };
   const submit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!form.name || !form.phone || !form.email || !form.service) {
-      setError('Please add your name, phone, email, and preferred service.');
+    const nextErrors: Partial<Record<keyof typeof form, string>> = {};
+    if (!form.name.trim()) nextErrors.name = 'Please add your name.';
+    if (!form.phone.trim()) nextErrors.phone = 'Please add a phone number.';
+    else if (form.phone.replace(/\D/g, '').length < 7) nextErrors.phone = 'Please check this phone number.';
+    if (!form.email.trim()) nextErrors.email = 'Please add your email.';
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) nextErrors.email = 'Please check this email.';
+    if (!form.service) nextErrors.service = 'Please choose a service.';
+    if (Object.keys(nextErrors).length > 0) {
+      setErrors(nextErrors);
       return;
     }
-    setError('');
     setStatus('submitting');
     window.setTimeout(() => setStatus('success'), 650);
   };
@@ -24,7 +33,7 @@ export function AppointmentForm({ compact = false }: { compact?: boolean }) {
         <span className="grid size-12 place-items-center rounded-full bg-primary text-primary-foreground"><Check className="size-6" /></span>
         <h3 className="font-display mt-6 text-3xl text-foreground">We’ve got your request.</h3>
         <p className="mt-3 max-w-sm text-sm leading-6 text-muted-foreground">Thank you, {form.name.split(' ')[0]}. Our team will reach out during office hours to find a time that works for you.</p>
-        <button type="button" onClick={() => { setStatus('idle'); setForm({ name: '', phone: '', email: '', service: '', message: '' }); }} data-testid="button-new-appointment-request" className="focus-ring mt-7 text-sm font-bold text-primary underline underline-offset-4">Send another request</button>
+        <button type="button" onClick={() => { setStatus('idle'); setErrors({}); setForm({ name: '', phone: '', email: '', service: '', message: '' }); }} data-testid="button-new-appointment-request" className="focus-ring mt-7 min-h-11 text-sm font-bold text-primary underline underline-offset-4">Send another request</button>
       </div>
     );
   }
@@ -32,19 +41,19 @@ export function AppointmentForm({ compact = false }: { compact?: boolean }) {
   return (
     <form onSubmit={submit} className={compact ? 'space-y-4' : 'space-y-5'} noValidate>
       <div className="grid gap-4 sm:grid-cols-2">
-        <label className="text-sm font-semibold text-foreground">Name <input required value={form.name} onChange={(e) => update('name', e.target.value)} data-testid="input-name" className={`${inputClass} mt-2`} placeholder="Your name" /></label>
-        <label className="text-sm font-semibold text-foreground">Phone <input required type="tel" value={form.phone} onChange={(e) => update('phone', e.target.value)} data-testid="input-phone" className={`${inputClass} mt-2`} placeholder="707-555-0198" /></label>
+        <label htmlFor="appointment-name" className="text-sm font-semibold text-foreground">Name <span className="text-destructive" aria-hidden="true">*</span><input id="appointment-name" required aria-required="true" aria-invalid={Boolean(errors.name)} aria-describedby={errors.name ? 'appointment-name-error' : undefined} value={form.name} onChange={(e) => update('name', e.target.value)} data-testid="input-name" className={`${inputClass} mt-2`} placeholder="Your name" />{errors.name && <span id="appointment-name-error" className="mt-1 block text-xs font-medium text-destructive">{errors.name}</span>}</label>
+        <label htmlFor="appointment-phone" className="text-sm font-semibold text-foreground">Phone <span className="text-destructive" aria-hidden="true">*</span><input id="appointment-phone" required aria-required="true" aria-invalid={Boolean(errors.phone)} aria-describedby={errors.phone ? 'appointment-phone-error' : undefined} type="tel" value={form.phone} onChange={(e) => update('phone', e.target.value)} data-testid="input-phone" className={`${inputClass} mt-2`} placeholder="707-555-0198" />{errors.phone && <span id="appointment-phone-error" className="mt-1 block text-xs font-medium text-destructive">{errors.phone}</span>}</label>
       </div>
       <div className="grid gap-4 sm:grid-cols-2">
-        <label className="text-sm font-semibold text-foreground">Email <input required type="email" value={form.email} onChange={(e) => update('email', e.target.value)} data-testid="input-email" className={`${inputClass} mt-2`} placeholder="you@example.com" /></label>
-        <label className="text-sm font-semibold text-foreground">Preferred service
-          <select required value={form.service} onChange={(e) => update('service', e.target.value)} data-testid="select-preferred-service" className={`${inputClass} mt-2`}>
+        <label htmlFor="appointment-email" className="text-sm font-semibold text-foreground">Email <span className="text-destructive" aria-hidden="true">*</span><input id="appointment-email" required aria-required="true" aria-invalid={Boolean(errors.email)} aria-describedby={errors.email ? 'appointment-email-error' : undefined} type="email" value={form.email} onChange={(e) => update('email', e.target.value)} data-testid="input-email" className={`${inputClass} mt-2`} placeholder="you@example.com" />{errors.email && <span id="appointment-email-error" className="mt-1 block text-xs font-medium text-destructive">{errors.email}</span>}</label>
+        <label htmlFor="appointment-service" className="text-sm font-semibold text-foreground">Preferred service <span className="text-destructive" aria-hidden="true">*</span>
+          <select id="appointment-service" required aria-required="true" aria-invalid={Boolean(errors.service)} aria-describedby={errors.service ? 'appointment-service-error' : undefined} value={form.service} onChange={(e) => update('service', e.target.value)} data-testid="select-preferred-service" className={`${inputClass} mt-2`}>
             <option value="">Select a service</option>{services.map((service) => <option key={service} value={service}>{service}</option>)}
-          </select>
+          </select>{errors.service && <span id="appointment-service-error" className="mt-1 block text-xs font-medium text-destructive">{errors.service}</span>}
         </label>
       </div>
-      <label className="block text-sm font-semibold text-foreground">Message <textarea value={form.message} onChange={(e) => update('message', e.target.value)} data-testid="input-message" className={`${inputClass} mt-2 min-h-28 resize-y`} placeholder="Anything you’d like us to know?" /></label>
-      {error && <p className="text-sm font-medium text-destructive" data-testid="status-form-error">{error}</p>}
+      <label htmlFor="appointment-message" className="block text-sm font-semibold text-foreground">Message <span className="font-normal text-muted-foreground">(optional)</span><textarea id="appointment-message" value={form.message} onChange={(e) => update('message', e.target.value)} data-testid="input-message" className={`${inputClass} mt-2 min-h-28 resize-y`} placeholder="Anything you’d like us to know?" /></label>
+      {Object.keys(errors).length > 0 && <p role="alert" className="text-sm font-medium text-destructive" data-testid="status-form-error">Please review the highlighted fields and try again.</p>}
       <button disabled={status === 'submitting'} type="submit" data-testid="button-submit-appointment" className="focus-ring inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-5 py-3.5 text-sm font-bold text-primary-foreground transition-transform hover:-translate-y-0.5 disabled:cursor-wait disabled:opacity-70">
         {status === 'submitting' ? <><LoaderCircle className="size-4 animate-spin" /> Sending request</> : <><Send className="size-4" /> Request an appointment</>}
       </button>

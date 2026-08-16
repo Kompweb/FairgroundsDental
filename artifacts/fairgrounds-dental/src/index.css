@@ -94,7 +94,8 @@
 @layer base {
   * { @apply border-border; }
   html { scroll-behavior: smooth; }
-  body { @apply font-sans antialiased bg-background text-foreground; }
+  body { @apply font-sans antialiased bg-background text-foreground; font-size: 1.0625rem; line-height: 1.65; }
+  p { line-height: 1.7; }
   ::selection { background: hsl(var(--accent)); color: hsl(var(--foreground)); }
 }
 
@@ -103,10 +104,15 @@
   .text-balance { text-wrap: balance; }
   .container-wide { width: min(100% - 2rem, 1200px); margin-inline: auto; }
   .focus-ring { @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background; }
-  .grain::after { content: ''; position: fixed; inset: 0; pointer-events: none; opacity: .045; z-index: 50; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E"); }
-  .animate-rise { animation: rise .7s cubic-bezier(.2,.75,.25,1) both; }
-  .animate-fade { animation: fade .65s ease both; }
+  .grain::after { content: ''; position: fixed; inset: 0; pointer-events: none; opacity: .02; z-index: 50; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E"); }
+  .animate-rise { animation: rise .35s ease-out both; }
+  .animate-fade { animation: fade .25s ease-out both; }
 }
 
-@keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .animate-rise, .animate-fade { animation: none; }
+}
