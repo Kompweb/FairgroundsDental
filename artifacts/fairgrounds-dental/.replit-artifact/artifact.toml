@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "Fairgrounds Dental Practice"
+description = "A warm, trustworthy, mobile-first dental practice website for Fairgrounds Dental Practice in Vallejo, California, featuring services, doctors, new patient guidance, reviews, contact details, and appointment CTAs."
+version = "1.0.0"
+id = "artifacts/fairgrounds-dental"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 18103
+
+[services.development]
+run = "pnpm --filter @workspace/fairgrounds-dental run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/fairgrounds-dental", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/fairgrounds-dental/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "18103"
+BASE_PATH = "/"

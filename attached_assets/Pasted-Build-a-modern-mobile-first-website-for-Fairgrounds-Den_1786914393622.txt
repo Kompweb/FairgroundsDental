@@ -1,0 +1,41 @@
+Build a modern, mobile-first website for Fairgrounds Dental Practice, a family and cosmetic dental office in Vallejo, CA.
+
+Current business facts to use:
+- Name: Fairgrounds Dental Practice
+- Address: 200 Fairgrounds Dr, Vallejo, CA 94589
+- Phone: 707-552-8195
+- Email: office@fairgroundsdental.com
+- Hours: Monday-Thursday 8am-5pm, Friday-Sunday closed
+- Doctors: Ayoub Al Alousi, DDS and Wid Al Hussain, DDS
+- Main services: general dentistry, family dentistry, orthodontics, cosmetic dentistry, exams and cleanings, teeth whitening, crowns, same-day crowns, implants, fillings, root canals, emergency dentistry, custom night guards
+- Selling points: accepting new patients, most PPO insurance accepted, same-day emergency appointments, same-day crowns available, Cherry financing available
+- Insurance notes: accepts most PPO plans; currently in-network with Delta Dental PPO, MetLife, Humana, Guardian, Cigna, Zelis, and Argus
+
+Create a polished dental website that feels trustworthy, warm, clean, and local. Do not copy the old website text word-for-word; rewrite fresh, professional copy based on the facts above.
+
+Required pages/sections:
+1. Home page with strong hero, phone CTA, appointment CTA, emergency dental CTA, services overview, doctor intro, insurance/financing section, reviews preview, and location/contact block.
+2. About page with practice story, team-oriented messaging, and doctor cards.
+3. Services page with individual service cards and clear appointment CTAs.
+4. New Patients page with insurance, financing, first-visit expectations, and forms/appointment CTA.
+5. Reviews page with testimonial layout and Google review CTA placeholder.
+6. Contact page with click-to-call phone, email, address, office hours, embedded Google map, and contact/request appointment form.
+
+Technical requirements:
+- Use React + Vite + Tailwind CSS.
+- Make it fully responsive for mobile, tablet, and desktop.
+- Use accessible semantic HTML, proper heading order, visible focus states, good color contrast, and alt text.
+- Add sticky header navigation, mobile menu, footer, reusable components, and CTA buttons.
+- Phone numbers should use `tel:` links.
+- Contact form should include name, phone, email, preferred service, message, and basic validation.
+- Add SEO metadata for each page.
+- Add LocalBusiness/Dentist schema JSON-LD.
+- Add Open Graph tags.
+- Add placeholder GA4/GTM integration comments so analytics can be added later.
+- Optimize for fast load and avoid oversized images.
+- Include a README with setup, run, and deployment instructions.
+
+Design direction:
+- Clean healthcare/dental aesthetic, not generic corporate.
+- Use white space, soft blue/teal accents, confident typography, and real-feeling patient-care imagery placeholders.
+- Prioritize appointment booking and emergency call actions throughout the site.
