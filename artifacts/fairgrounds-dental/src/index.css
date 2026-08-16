@@ -1,6 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap');
-@import 'tailwindcss';
-@import 'tw-animate-css';
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap");
+@import "tailwindcss";
+@import "tw-animate-css";
 @plugin "@tailwindcss/typography";
 
 @custom-variant dark (&:is(.dark *));
@@ -47,7 +47,7 @@
   --secondary: 197 38% 91%;
   --secondary-foreground: 201 37% 18%;
   --muted: 39 27% 92%;
-  --muted-foreground: 201 15% 44%;
+  --muted-foreground: 201 20% 34%;
   --accent: 12 70% 65%;
   --accent-foreground: 201 37% 18%;
   --destructive: 5 64% 44%;
@@ -60,14 +60,15 @@
   --sidebar-accent: 201 30% 28%;
   --sidebar-accent-foreground: 42 45% 98%;
   --sidebar-ring: 174 48% 42%;
-  --app-font-sans: 'DM Sans', ui-sans-serif, sans-serif;
-  --app-font-serif: 'Instrument Serif', Georgia, serif;
-  --app-font-mono: 'DM Sans', ui-monospace, monospace;
-  --radius: 1rem;
-  --shadow-soft: 0 16px 50px hsl(201 37% 18% / .10);
-  --shadow-card: 0 2px 0 hsl(201 37% 18% / .05), 0 12px 30px hsl(201 37% 18% / .07);
+  --app-font-sans: "DM Sans", ui-sans-serif, sans-serif;
+  --app-font-serif: "Instrument Serif", Georgia, serif;
+  --app-font-mono: "DM Sans", ui-monospace, monospace;
+  --radius: 0.75rem;
+  --shadow-soft: 0 12px 34px hsl(201 37% 18% / 0.1);
+  --shadow-card:
+    0 1px 0 hsl(201 37% 18% / 0.05), 0 10px 24px hsl(201 37% 18% / 0.07);
   --tracking-normal: 0em;
-  --spacing: .25rem;
+  --spacing: 0.25rem;
 }
 
 .dark {
@@ -92,27 +93,82 @@
 }
 
 @layer base {
-  * { @apply border-border; }
-  html { scroll-behavior: smooth; }
-  body { @apply font-sans antialiased bg-background text-foreground; font-size: 1.0625rem; line-height: 1.65; }
-  p { line-height: 1.7; }
-  ::selection { background: hsl(var(--accent)); color: hsl(var(--foreground)); }
+  * {
+    @apply border-border;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+    font-size: 1.125rem;
+    line-height: 1.7;
+  }
+  p {
+    line-height: 1.7;
+  }
+  ::selection {
+    background: hsl(var(--accent));
+    color: hsl(var(--foreground));
+  }
 }
 
 @layer utilities {
-  .font-display { font-family: var(--app-font-serif); }
-  .text-balance { text-wrap: balance; }
-  .container-wide { width: min(100% - 2rem, 1200px); margin-inline: auto; }
-  .focus-ring { @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background; }
-  .grain::after { content: ''; position: fixed; inset: 0; pointer-events: none; opacity: .02; z-index: 50; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E"); }
-  .animate-rise { animation: rise .35s ease-out both; }
-  .animate-fade { animation: fade .25s ease-out both; }
+  .font-display {
+    font-family: var(--app-font-serif);
+  }
+  .text-balance {
+    text-wrap: balance;
+  }
+  .container-wide {
+    width: min(100% - 2rem, 1200px);
+    margin-inline: auto;
+  }
+  .focus-ring {
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background;
+  }
+  .grain::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.02;
+    z-index: 50;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
+  }
+  .animate-rise {
+    animation: rise 0.25s ease-out both;
+  }
+  .animate-fade {
+    animation: fade 0.2s ease-out both;
+  }
 }
 
-@keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
 
 @media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  .animate-rise, .animate-fade { animation: none; }
+  html {
+    scroll-behavior: auto;
+  }
+  .animate-rise,
+  .animate-fade {
+    animation: none;
+  }
 }
