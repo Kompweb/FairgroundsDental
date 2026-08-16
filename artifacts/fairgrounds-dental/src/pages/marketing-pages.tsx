@@ -30,6 +30,8 @@ const googleMapsDirectionsUrl =
 const officeStreetViewUrl =
   "https://maps.google.com/maps?layer=c&cbll=38.123570,-122.230946&cbp=11,285,0,0,0&output=svembed";
 
+const googleReviewUrl = "https://maps.app.goo.gl/mrXCci19eGsuxRmQA";
+
 const services = [
   {
     title: "Everyday care",
@@ -118,6 +120,33 @@ function ButtonLink({
       {children}
       <ArrowRight className="size-5" aria-hidden="true" />
     </Link>
+  );
+}
+
+function GoogleRatingBadge({ compact = false }: { compact?: boolean }) {
+  return (
+    <a
+      href={googleReviewUrl}
+      target="_blank"
+      rel="noreferrer"
+      data-testid="link-google-rating"
+      className={`focus-ring inline-flex items-center gap-3 rounded-lg border border-border bg-card text-foreground shadow-[var(--shadow-card)] transition-colors hover:bg-secondary/45 ${
+        compact ? "min-h-14 px-4 py-3" : "min-h-20 px-5 py-4"
+      }`}
+    >
+      <span className="flex gap-1 text-accent" aria-hidden="true">
+        {[1, 2, 3, 4, 5].map((star) => (
+          <Star key={star} className="size-5 fill-current" />
+        ))}
+      </span>
+      <span className="h-9 w-px bg-border" aria-hidden="true" />
+      <span className="leading-tight">
+        <span className="block text-2xl font-bold text-primary">4.9</span>
+        <span className="block text-sm font-bold uppercase text-muted-foreground">
+          Google rating
+        </span>
+      </span>
+    </a>
   );
 }
 
@@ -514,7 +543,8 @@ function ReviewPreview() {
           ))}
         </div>
       </div>
-      <div className="mt-8">
+      <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
+        <GoogleRatingBadge compact />
         <ButtonLink href="/reviews" secondary>
           Read more patient stories
         </ButtonLink>
@@ -1045,14 +1075,7 @@ export function ReviewsPage() {
               eyebrow="Patient stories"
               title="A few words from the chair."
             />
-            <div className="flex items-center gap-2 rounded-lg border border-border bg-card px-4 py-3 text-base font-bold">
-              <span className="flex gap-1 text-accent">
-                {[1, 2, 3, 4, 5].map((star) => (
-                  <Star key={star} className="size-5 fill-current" />
-                ))}
-              </span>{" "}
-              Trusted by Vallejo families
-            </div>
+            <GoogleRatingBadge />
           </div>
           <div className="grid gap-5 md:grid-cols-2">
             {testimonials.map((item, i) => (
@@ -1088,8 +1111,9 @@ export function ReviewsPage() {
               </h2>
             </div>
             <a
-              href="#"
-              onClick={(event) => event.preventDefault()}
+              href={googleReviewUrl}
+              target="_blank"
+              rel="noreferrer"
               data-testid="link-google-review"
               className="focus-ring inline-flex min-h-14 items-center gap-2 rounded-lg bg-primary px-6 py-3 text-base font-bold text-primary-foreground"
             >
