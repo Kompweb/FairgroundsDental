@@ -33,7 +33,7 @@ export function Logo() {
       <img
         src="/images/fairgroundsdental-logo.png"
         alt="Fairgrounds Dental Practice"
-        className="h-auto w-[min(68vw,340px)] max-w-none lg:w-[420px]"
+        className="h-auto w-[min(76vw,280px)] max-w-none sm:w-[340px] lg:w-[380px]"
       />
     </Link>
   );
@@ -44,10 +44,10 @@ export function Header() {
   const [location] = useLocation();
   return (
     <header className="sticky top-0 z-40 bg-background/90 backdrop-blur-md">
-      <div className="container-wide flex min-h-[132px] items-center justify-between gap-4 lg:min-h-[156px]">
+      <div className="container-wide flex min-h-[190px] items-center justify-between gap-4 sm:min-h-[220px] lg:min-h-[240px]">
         <Logo />
         <nav
-          className="hidden items-center gap-5 xl:flex"
+          className="hidden items-center gap-5 2xl:flex"
           aria-label="Main navigation"
         >
           {navItems.map((item) => (
@@ -85,7 +85,7 @@ export function Header() {
           aria-label={open ? "Close menu" : "Open menu"}
           aria-expanded={open}
           data-testid="button-mobile-menu"
-          className="focus-ring grid size-[52px] shrink-0 place-items-center rounded-lg border border-primary/25 bg-secondary text-primary shadow-sm xl:hidden"
+          className="focus-ring grid size-[52px] shrink-0 place-items-center rounded-lg border border-primary/25 bg-secondary text-primary shadow-sm 2xl:hidden"
           onClick={() => setOpen(!open)}
         >
           {open ? (
