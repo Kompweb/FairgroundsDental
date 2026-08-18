@@ -232,7 +232,7 @@ function HeroVisual() {
 function TrustStrip() {
   return (
     <section className="border-b border-border bg-card">
-      <div className="container-wide grid gap-5 py-7 text-base sm:grid-cols-3 sm:gap-8">
+      <div className="container-wide grid gap-5 py-7 pl-4 text-base sm:grid-cols-3 sm:gap-8 sm:pl-6 lg:pl-8">
         <div className="flex gap-3">
           <BadgeCheck className="mt-0.5 size-6 shrink-0 text-primary" />
           <div>
@@ -301,20 +301,6 @@ function AdaLogoStrip() {
                 loading="lazy"
               />
             </a>
-            <a
-              href="https://commons.ada.org/insignia/4/"
-              target="_blank"
-              rel="noreferrer"
-              data-testid="link-ada-dental-emblem"
-              className="focus-ring flex min-h-24 items-center justify-center rounded-lg border border-border bg-background px-5 py-4 transition-colors hover:bg-secondary/45"
-            >
-              <img
-                src="/images/affiliations/ada-dental-emblem.png"
-                alt="Official dental emblem from the ADA Library and Archives"
-                className="max-h-20 w-auto object-contain"
-                loading="lazy"
-              />
-            </a>
           </div>
         </div>
       </div>
@@ -348,9 +334,6 @@ function ServicePreview() {
               <span className="flex items-center gap-3">
                 <span className="grid size-11 place-items-center rounded-lg bg-secondary text-primary">
                   <Icon className="size-6" />
-                </span>
-                <span className="font-mono text-sm text-muted-foreground">
-                  0{index + 1}
                 </span>
               </span>
               <span>
@@ -544,7 +527,6 @@ function ReviewPreview() {
         </div>
       </div>
       <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
-        <GoogleRatingBadge compact />
         <ButtonLink href="/reviews" secondary>
           Read more patient stories
         </ButtonLink>
@@ -555,7 +537,7 @@ function ReviewPreview() {
 
 function LocationBlock() {
   return (
-    <section className="bg-foreground py-16 text-background sm:py-20">
+    <section className="bg-primary py-16 text-background sm:py-20">
       <div className="container-wide grid gap-10 lg:grid-cols-[1fr_.8fr] lg:items-end">
         <div>
           <SectionHeading
@@ -625,6 +607,9 @@ export function HomePage() {
                 Clear answers, a calm visit, and easy scheduling for Vallejo
                 patients and families.
               </p>
+              <div className="mt-6">
+                <GoogleRatingBadge compact />
+              </div>
               <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
                 <ButtonLink href="/contact">Request appointment</ButtonLink>
                 <a
@@ -634,13 +619,12 @@ export function HomePage() {
                 >
                   <Phone className="size-5" /> Call 707-552-8195
                 </a>
-                <a
-                  href="tel:7075528195"
+                                <a
+                  href="https://www.fairgroundsdental.com/services/emergency-dentistry"
                   data-testid="link-home-emergency"
-                  className="focus-ring inline-flex min-h-14 items-center justify-center gap-2 rounded-lg border border-accent/60 bg-accent/20 px-6 py-3 text-base font-bold text-foreground transition-colors hover:bg-accent/35"
+                  className="focus-ring inline-flex min-h-14 items-center justify-center gap-2 px-2 py-3 text-base font-extrabold text-red-700 underline decoration-red-700/35 underline-offset-4 transition-colors hover:text-red-800 hover:decoration-red-800"
                 >
-                  <CircleAlert className="size-5 text-destructive" /> Dental
-                  emergency?
+                  {"\u{1F53A} Dental Emergency?"}
                 </a>
               </div>
               <div className="mt-6 grid gap-3 text-base font-semibold text-foreground sm:grid-cols-2">
@@ -874,7 +858,7 @@ export function ServicesPage() {
             })}
           </div>
         </section>
-        <section className="bg-foreground py-16 text-background sm:py-20">
+        <section className="bg-primary py-16 text-background sm:py-20">
           <div className="container-wide flex flex-col justify-between gap-8 sm:flex-row sm:items-center">
             <div>
               <p className="text-sm font-bold uppercase text-accent">

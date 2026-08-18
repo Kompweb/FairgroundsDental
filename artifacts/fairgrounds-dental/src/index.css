@@ -178,3 +178,57 @@
     animation: none;
   }
 }
+
+/* senior-cta-size */
+a[class*="min-h-12"],
+a[class*="min-h-14"],
+button[class*="min-h-12"],
+button[class*="min-h-14"],
+a[class*="min-h-8"] {
+  font-size: 1.5rem !important;
+  line-height: 1.25 !important;
+}
+
+/* appointment-yellow-cta */
+a[data-testid="link-cta-contact"],
+a[data-testid="link-header-appointment"],
+a[data-testid="link-mobile-appointment"],
+a[data-testid="link-mobile-sticky-appointment"],
+button[data-testid="button-submit-appointment"],
+button[data-testid="button-new-appointment-request"] {
+  background-color: #f7c948 !important;
+  border-color: #d9a900 !important;
+  color: #173244 !important;
+  box-shadow: 0 8px 20px hsl(45 90% 42% / 0.24) !important;
+}
+a[data-testid="link-cta-contact"]:hover,
+a[data-testid="link-header-appointment"]:hover,
+a[data-testid="link-mobile-appointment"]:hover,
+a[data-testid="link-mobile-sticky-appointment"]:hover,
+button[data-testid="button-submit-appointment"]:hover,
+button[data-testid="button-new-appointment-request"]:hover {
+  background-color: #eab308 !important;
+}
+
+/* urgent-call-small-exception */
+a[data-testid="link-urgent-call"] {
+  font-size: 1rem !important;
+  line-height: 1.2 !important;
+  min-height: 2.4rem !important;
+  padding-block: 0.35rem !important;
+  padding-inline: 0.75rem !important;
+  white-space: nowrap !important;
+}
+
+/* urgent-call-extra-padding */
+a[data-testid="link-urgent-call"] {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 1rem !important;
+  line-height: 1.2 !important;
+  min-height: 3rem !important;
+  padding-block: 0.45rem !important;
+  padding-inline: 1rem !important;
+  white-space: nowrap !important;
+}

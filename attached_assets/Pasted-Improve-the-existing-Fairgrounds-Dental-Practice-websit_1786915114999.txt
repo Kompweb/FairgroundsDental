@@ -1,0 +1,58 @@
+Improve the existing Fairgrounds Dental Practice website UI/UX for a dental audience that is mostly age 55+.
+
+Keep the same business facts, pages, React/Vite/Tailwind stack, SEO, schema, and accessibility foundation. Redesign the site so it feels calm, trustworthy, clear, local, and easy for older adults to use.
+
+Audience priorities:
+- Many visitors are 55+ and may prefer simple navigation, readable text, clear instructions, and obvious phone/contact options.
+- Avoid trendy, overly animated, or complicated layouts.
+- Prioritize trust, comfort, experience, insurance help, emergency care, and easy scheduling.
+- Make the site feel reassuring and professional, not flashy.
+
+UI/UX improvements:
+1. Increase readability:
+- Use larger body text, comfortable line height, strong contrast, and simple typography.
+- Avoid tiny labels, low-contrast gray text, thin fonts, and cluttered layouts.
+- Keep headings direct and easy to understand.
+
+2. Simplify navigation:
+- Make the header very clear with Home, About, Services, New Patients, Reviews, Contact.
+- Make “Call 707-552-8195” and “Request Appointment” obvious.
+- On mobile, add a persistent bottom bar with Call and Appointment actions.
+- Make tap targets large and easy to press.
+
+3. Rework the home page:
+- Hero should immediately communicate: trusted family, cosmetic, emergency, and same-day crown dental care in Vallejo.
+- Add clear trust points above the fold: accepting new patients, most PPO insurance accepted, same-day emergency appointments, same-day crowns available.
+- Make the phone number prominent.
+- Use warm, realistic patient-care imagery, ideally showing older adults or multigenerational families.
+
+4. Improve trust and reassurance:
+- Highlight decades of team experience.
+- Feature both doctors clearly with friendly, professional cards.
+- Add a section explaining that the office helps verify insurance benefits and submit claims.
+- Add Cherry financing in simple, plain language.
+- Add reviews/testimonials in a readable format.
+
+5. Improve services UX:
+- Make services easy to scan with plain-language descriptions.
+- Emphasize common 55+ needs: crowns, implants, dentures/bridges if already present, cleanings, emergency care, root canals, night guards, whitening, and general dentistry.
+- Add “Not sure what you need? Call us” messaging.
+
+6. Improve forms:
+- Keep the appointment/contact form short and simple.
+- Use large fields, clear labels, plain error messages, and a clear success confirmation.
+- Do not make the form feel technical or overwhelming.
+
+7. Visual direction:
+- Calm dental palette: white, soft blue/teal, subtle warm neutrals.
+- Larger spacing, clear sections, no visual clutter.
+- Avoid excessive animations, gradients, trendy layouts, or tiny icon-only controls.
+- Make the website feel established, caring, and easy to use.
+
+8. Quality checks:
+- Review every page on desktop and mobile.
+- Fix any text that is too small, CTAs that wrap awkwardly, cramped cards, confusing forms, or mobile menu issues.
+- Preserve SEO metadata, Open Graph tags, Dentist/LocalBusiness schema, accessibility, and performance.
+- Run typecheck/build and fix any issues.
+
+Goal: create a high-trust, senior-friendly dental website that makes it very easy for patients or family members to call, request an appointment, understand insurance options, and feel comfortable choosing Fairgrounds Dental Practice.

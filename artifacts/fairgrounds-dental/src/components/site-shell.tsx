@@ -33,7 +33,7 @@ export function Logo() {
       <img
         src="/images/fairgroundsdental-logo.png"
         alt="Fairgrounds Dental Practice"
-        className="h-auto w-[min(76vw,280px)] max-w-none sm:w-[340px] lg:w-[380px]"
+        className="h-auto w-[min(64vw,180px)] max-w-none sm:w-[220px] lg:w-[250px]"
       />
     </Link>
   );
@@ -44,7 +44,7 @@ export function Header() {
   const [location] = useLocation();
   return (
     <header className="sticky top-0 z-40 bg-background/90 backdrop-blur-md">
-      <div className="container-wide flex min-h-[190px] items-center justify-between gap-4 sm:min-h-[220px] lg:min-h-[240px]">
+      <div className="container-wide flex min-h-[120px] items-center justify-between gap-4 pt-3 pb-2 sm:min-h-[140px] sm:pt-4 sm:pb-3 lg:min-h-[150px]">
         <Logo />
         <nav
           className="hidden items-center gap-5 2xl:flex"
@@ -182,7 +182,7 @@ export function MobileActionBar() {
 
 export function Footer() {
   return (
-    <footer className="bg-foreground pb-20 text-background lg:pb-0">
+    <footer className="bg-primary pb-20 text-background lg:pb-0">
       <div className="container-wide grid gap-12 py-14 md:grid-cols-[1.25fr_1fr_1fr] md:py-20">
         <div>
           <p className="text-xl font-bold text-background">

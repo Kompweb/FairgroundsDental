@@ -1,0 +1,48 @@
+Paste this into Replit Agent:
+
+```text
+Improve the existing Fairgrounds Dental Practice website UI/UX. Keep the same business facts, pages, and React/Vite/Tailwind stack, but redesign the experience so it feels more premium, trustworthy, local, and appointment-focused.
+
+Start by reviewing the current site on desktop and mobile, then make these changes:
+
+1. Rework the home page hierarchy:
+- Make the hero more polished and less template-like.
+- Put the main value clearly above the fold: family, cosmetic, emergency, and same-day crown dental care in Vallejo.
+- Add strong CTAs: “Request Appointment,” “Call 707-552-8195,” and “Dental Emergency?”
+- Make phone and emergency actions highly visible on mobile.
+
+2. Improve visual design:
+- Use a cleaner dental color system with white, soft teal/blue, warm neutral accents, and restrained contrast.
+- Improve spacing, typography, section rhythm, and visual hierarchy.
+- Avoid generic card-heavy layouts; make sections feel intentional.
+- Add more realistic image placeholders or dental/patient-care imagery areas.
+- Make doctor, service, insurance, and review sections feel more refined.
+
+3. Improve navigation and conversion:
+- Make the sticky header simpler and clearer.
+- Add a persistent mobile call/appointment bar.
+- Make service cards easier to scan.
+- Add repeated CTAs after major sections without making the page feel spammy.
+- Ensure every important path leads to appointment, phone, or contact.
+
+4. Improve page content and UX:
+- Rewrite copy to sound warm, professional, and local to Vallejo.
+- Keep content concise and skimmable.
+- Add better new-patient flow: insurance, Cherry financing, first visit, emergency appointments.
+- Make the contact form feel trustworthy and easy to complete.
+- Add success/error states and clear required fields.
+
+5. Improve mobile experience:
+- Check all pages at mobile width.
+- Fix any cramped spacing, long lines, oversized headings, awkward cards, or CTA wrapping.
+- Make tap targets large and thumb-friendly.
+- Ensure the mobile menu is polished.
+
+6. Keep technical quality:
+- Preserve SEO metadata, Open Graph tags, and Dentist/LocalBusiness schema.
+- Keep accessibility strong: semantic HTML, focus states, contrast, labels, alt text.
+- Keep performance fast.
+- Run typecheck/build after changes and fix any issues.
+
+The goal is not just “prettier.” Make the site feel like a high-converting dental practice website that builds trust quickly and makes it easy for patients to call, request an appointment, or find emergency care.
+```
