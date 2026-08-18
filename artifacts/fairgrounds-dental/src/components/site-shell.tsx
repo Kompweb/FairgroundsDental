@@ -1,8 +1,9 @@
-import { type ReactNode, useState } from "react";
+import { lazy, Suspense, type ReactNode, useEffect, useState } from "react";
 import { Link, useLocation } from "wouter";
 import {
   ArrowRight,
   CalendarDays,
+  Clock3,
   MapPin,
   Menu,
   Navigation,
@@ -22,6 +23,8 @@ const navItems = [
 const googleMapsDirectionsUrl =
   "https://www.google.com/maps/dir/?api=1&destination=200+Fairgrounds+Dr%2C+Vallejo%2C+CA+94589";
 
+const LazyMobileActionBar = lazy(() => import("./mobile-action-bar"));
+
 export function Logo() {
   return (
     <Link
@@ -38,9 +41,18 @@ export function Logo() {
   );
 }
 
-export function Header() {
+export function Header({
+  onMenuOpenChange,
+}: {
+  onMenuOpenChange?: (open: boolean) => void;
+}) {
   const [open, setOpen] = useState(false);
   const [location] = useLocation();
+
+  useEffect(() => {
+    onMenuOpenChange?.(open);
+  }, [onMenuOpenChange, open]);
+
   return (
     <header className="sticky top-0 z-40 bg-background/90 backdrop-blur-md">
       <div className="container-wide flex min-h-[120px] items-center justify-between gap-4 pt-3 pb-2 sm:min-h-[140px] sm:pt-4 sm:pb-3 lg:min-h-[150px]">
@@ -153,33 +165,10 @@ export function UrgentBar() {
   );
 }
 
-export function MobileActionBar() {
-  return (
-    <div
-      className="fixed inset-x-0 bottom-0 z-50 border-t border-border/80 bg-background/95 px-4 pt-3 pb-[calc(.75rem+env(safe-area-inset-bottom))] shadow-[0_-8px_24px_hsl(201_37%_18%/.08)] backdrop-blur-md lg:hidden"
-      aria-label="Quick actions"
-    >
-      <div className="mx-auto grid max-w-md grid-cols-2 gap-2">
-        <a
-          href="tel:7075528195"
-          data-testid="link-mobile-sticky-call"
-          className="focus-ring flex min-h-14 items-center justify-center gap-2 rounded-lg bg-accent px-2 text-base font-bold text-accent-foreground"
-        >
-          <Phone className="size-5" /> Call office
-        </a>
-        <Link
-          href="/contact"
-          data-testid="link-mobile-sticky-appointment"
-          className="focus-ring flex min-h-14 items-center justify-center gap-2 rounded-lg bg-primary px-2 text-base font-bold text-primary-foreground"
-        >
-          <CalendarDays className="size-5" /> Appointment
-        </Link>
-      </div>
-    </div>
-  );
-}
-
 export function Footer() {
+  const [location] = useLocation();
+  const showMap = location.replace(/\/$/, "") !== "/contact";
+
   return (
     <footer className="bg-primary pb-20 text-background lg:pb-0">
       <div className="container-wide grid gap-10 py-14 md:py-20 lg:grid-cols-[1fr_.8fr]">
@@ -204,7 +193,7 @@ export function Footer() {
             <p className="text-base font-bold uppercase tracking-[0.12em] text-background/70">
               Explore
             </p>
-            <div className="mt-5 flex flex-col items-start gap-3 text-lg text-background/80">
+            <div className="mt-5 grid grid-cols-2 gap-x-6 gap-y-3 text-lg text-background/80 sm:flex sm:flex-col sm:items-start">
               {navItems.map((item) => (
                 <Link
                   key={item.href}
@@ -223,15 +212,17 @@ export function Footer() {
             Find us
           </p>
           <div className="mt-5 space-y-4 text-lg leading-8 text-background/80">
-            <div className="overflow-hidden rounded-lg border border-background/15">
-              <iframe
-                title="Fairgrounds Dental Practice map"
-                src="https://www.google.com/maps?q=200+Fairgrounds+Dr,+Vallejo,+CA+94589&output=embed"
-                className="h-52 w-full md:h-72"
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-              />
-            </div>
+            {showMap && (
+              <div className="overflow-hidden rounded-lg border border-background/15">
+                <iframe
+                  title="Fairgrounds Dental Practice map"
+                  src="https://www.google.com/maps?q=200+Fairgrounds+Dr,+Vallejo,+CA+94589&output=embed"
+                  className="h-52 w-full md:h-72"
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                />
+              </div>
+            )}
             <p className="flex gap-3">
               <MapPin className="mt-1 size-4 shrink-0 text-accent" />
               200 Fairgrounds Dr
@@ -248,6 +239,36 @@ export function Footer() {
               <Navigation className="size-4 text-accent" />
               Google Maps directions
             </a>
+            <div className="flex gap-3 rounded-lg border border-background/15 px-4 py-3">
+              <Clock3 className="mt-1 size-4 shrink-0 text-accent" />
+              <div className="min-w-0 flex-1">
+                <p className="text-sm font-bold uppercase tracking-[0.12em] text-background/70">
+                  Office hours
+                </p>
+                <dl className="mt-2 grid gap-x-6 gap-y-1.5 text-base sm:grid-cols-2">
+                  <div className="flex justify-between gap-5">
+                    <dt>Monday</dt>
+                    <dd className="font-semibold text-background">8am-5pm</dd>
+                  </div>
+                  <div className="flex justify-between gap-5">
+                    <dt>Tuesday</dt>
+                    <dd className="font-semibold text-background">8am-5pm</dd>
+                  </div>
+                  <div className="flex justify-between gap-5">
+                    <dt>Wednesday</dt>
+                    <dd className="font-semibold text-background">8am-5pm</dd>
+                  </div>
+                  <div className="flex justify-between gap-5">
+                    <dt>Thursday</dt>
+                    <dd className="font-semibold text-background">8am-5pm</dd>
+                  </div>
+                  <div className="flex justify-between gap-5 sm:col-span-2">
+                    <dt>Friday-Sunday</dt>
+                    <dd className="font-semibold text-background">Closed</dd>
+                  </div>
+                </dl>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -261,14 +282,65 @@ export function Footer() {
   );
 }
 
+function DeferredMobileActionBar({ hidden }: { hidden: boolean }) {
+  const [shouldLoad, setShouldLoad] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    if (window.matchMedia("(min-width: 1024px)").matches) {
+      return;
+    }
+
+    let frame = 0;
+
+    const updateVisibility = () => {
+      const revealOffset = Math.max(window.innerHeight * 1.25, 800);
+      const shouldShow = !hidden && window.scrollY >= revealOffset;
+
+      setIsVisible(shouldShow);
+
+      if (shouldShow) {
+        setShouldLoad(true);
+      }
+    };
+
+    const scheduleUpdate = () => {
+      window.cancelAnimationFrame(frame);
+      frame = window.requestAnimationFrame(updateVisibility);
+    };
+
+    scheduleUpdate();
+    window.addEventListener("scroll", scheduleUpdate, { passive: true });
+    window.addEventListener("resize", scheduleUpdate);
+
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", scheduleUpdate);
+      window.removeEventListener("resize", scheduleUpdate);
+    };
+  }, [hidden]);
+
+  if (!shouldLoad || !isVisible) {
+    return null;
+  }
+
+  return (
+    <Suspense fallback={null}>
+      <LazyMobileActionBar />
+    </Suspense>
+  );
+}
+
 export function SiteShell({ children }: { children: ReactNode }) {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
   return (
     <div className="grain min-h-[100dvh] overflow-x-hidden">
       <UrgentBar />
-      <Header />
-      <div className="pb-20 lg:pb-0">{children}</div>
+      <Header onMenuOpenChange={setIsMobileMenuOpen} />
+      <div>{children}</div>
       <Footer />
-      <MobileActionBar />
+      <DeferredMobileActionBar hidden={isMobileMenuOpen} />
     </div>
   );
 }
@@ -307,26 +379,82 @@ export function SectionHeading({
   );
 }
 
+export type BreadcrumbItem = { label: string; href?: string };
+
+export function Breadcrumbs({ items }: { items: BreadcrumbItem[] }) {
+  return (
+    <nav aria-label="Breadcrumb" className="mb-4">
+      <ol className="flex flex-wrap items-center gap-2 text-sm font-semibold text-muted-foreground">
+        {items.map((item, index) => (
+          <li key={item.label} className="flex items-center gap-2">
+            {index > 0 && <span aria-hidden="true">/</span>}
+            {item.href ? (
+              <Link
+                href={item.href}
+                className="focus-ring rounded text-primary hover:underline"
+              >
+                {item.label}
+              </Link>
+            ) : (
+              <span aria-current="page" className="text-foreground">
+                {item.label}
+              </span>
+            )}
+          </li>
+        ))}
+      </ol>
+    </nav>
+  );
+}
+
 export function PageIntro({
   eyebrow,
   title,
   body,
+  breadcrumbs,
+  visual,
+  children,
 }: {
   eyebrow: string;
   title: string;
   body: string;
+  breadcrumbs?: BreadcrumbItem[];
+  visual?: ReactNode;
+  children?: ReactNode;
 }) {
+  const content = (
+    <div className="max-w-3xl animate-rise">
+      {breadcrumbs && <Breadcrumbs items={breadcrumbs} />}
+      <p className="text-sm font-bold uppercase text-primary">{eyebrow}</p>
+      <h1 className="font-logo mt-4 text-[2.75rem] font-extrabold leading-tight text-foreground sm:text-5xl lg:text-6xl">
+        {title}
+      </h1>
+      <p className="mt-6 max-w-2xl text-lg leading-8 text-muted-foreground">
+        {body}
+      </p>
+      {children}
+    </div>
+  );
+
+  if (!visual) {
+    return (
+      <section className="relative overflow-hidden bg-secondary/55">
+        <div className="container-wide relative py-14 sm:py-20 lg:py-24">
+          {content}
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className="relative overflow-hidden bg-secondary/55">
-      <div className="container-wide relative py-14 sm:py-20 lg:py-24">
-        <div className="max-w-3xl animate-rise">
-          <p className="text-sm font-bold uppercase text-primary">{eyebrow}</p>
-          <h1 className="font-logo mt-4 text-[2.75rem] font-extrabold leading-tight text-foreground sm:text-5xl lg:text-6xl">
-            {title}
-          </h1>
-          <p className="mt-6 max-w-2xl text-lg leading-8 text-muted-foreground">
-            {body}
-          </p>
+      <div className="container-wide relative grid gap-10 py-14 sm:py-20 lg:grid-cols-[1.04fr_.96fr] lg:items-center lg:gap-16 lg:py-24">
+        {content}
+        <div
+          className="animate-rise lg:justify-self-end"
+          style={{ animationDelay: ".08s" }}
+        >
+          {visual}
         </div>
       </div>
     </section>

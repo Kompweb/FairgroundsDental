@@ -3,22 +3,28 @@ import { Link } from "wouter";
 import {
   ArrowRight,
   BadgeCheck,
+  Bone,
   CalendarDays,
   Check,
   ChevronDown,
   CircleAlert,
   Clock3,
   CreditCard,
+  GraduationCap,
   HeartHandshake,
   MapPin,
   Navigation,
   Phone,
   Quote,
   ShieldCheck,
+  Smile,
+  Sofa,
   Sparkles,
   Star,
   Stethoscope,
+  Utensils,
   UsersRound,
+  type LucideIcon,
 } from "lucide-react";
 import { AppointmentForm } from "@/components/appointment-form";
 import { PageMeta } from "@/components/seo";
@@ -28,11 +34,17 @@ const googleMapsDirectionsUrl =
   "https://www.google.com/maps/dir/?api=1&destination=200+Fairgrounds+Dr%2C+Vallejo%2C+CA+94589";
 
 const officeStreetViewUrl =
-  "https://maps.google.com/maps?layer=c&cbll=38.123570,-122.230946&cbp=11,285,0,0,0&output=svembed";
+  "https://maps.google.com/maps?layer=c&cbll=38.123656,-122.230785&cbp=11,285,0,0,0&output=svembed";
 
 const googleReviewUrl = "https://maps.app.goo.gl/mrXCci19eGsuxRmQA";
 
-const services = [
+const services: {
+  title: string;
+  text: string;
+  icon: LucideIcon;
+  href?: string;
+  linkLabel?: string;
+}[] = [
   {
     title: "Everyday care",
     text: "Exams, cleanings, fillings, and a steady plan for keeping your smile comfortable.",
@@ -42,6 +54,8 @@ const services = [
     title: "Family dentistry",
     text: "A patient, encouraging place for growing smiles, busy parents, and every age in between.",
     icon: UsersRound,
+    href: "/services/pediatric-dentistry",
+    linkLabel: "Learn about pediatric dentistry",
   },
   {
     title: "Confident smiles",
@@ -55,8 +69,10 @@ const services = [
   },
   {
     title: "Restorative care",
-    text: "Implants, root canals, and same-day crowns designed to get life moving again.",
+    text: "Dental implants that replace a missing tooth root and crown for good, plus same-day crowns designed to get life moving again.",
     icon: Stethoscope,
+    href: "/services/dental-implants",
+    linkLabel: "Learn about dental implants",
   },
   {
     title: "Night guards",
@@ -156,13 +172,14 @@ function HeroVisual() {
       className="mx-auto w-full max-w-[520px] overflow-hidden rounded-lg border border-border bg-card shadow-[var(--shadow-soft)]"
       aria-label="Fairgrounds Dental office location"
     >
-      <div className="relative aspect-[4/3] min-h-[300px] bg-secondary">
-        <iframe
-          title="Street view of Fairgrounds Dental Practice at 200 Fairgrounds Drive"
-          src={officeStreetViewUrl}
-          className="absolute inset-0 size-full border-0"
-          loading="lazy"
-          referrerPolicy="no-referrer-when-downgrade"
+      <div className="bg-secondary">
+        <img
+          src="/images/office/dental-office-lobby-front-desk-vallejo-ca.jpg"
+          alt="Lobby and front desk at Fairgrounds Dental Practice in Vallejo, CA"
+          className="aspect-[4/3] w-full object-cover"
+          width={800}
+          height={533}
+          loading="eager"
         />
       </div>
       <div className="border-t border-border p-5 sm:p-6">
@@ -229,6 +246,41 @@ function HeroVisual() {
   );
 }
 
+function StreetViewSection() {
+  return (
+    <section className="container-wide pb-20 sm:pb-28">
+      <div className="mb-5 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <p className="text-sm font-bold uppercase text-primary">
+            Street View
+          </p>
+          <h2 className="mt-2 text-3xl font-bold leading-tight text-foreground">
+            See the office before you arrive.
+          </h2>
+        </div>
+        <a
+          href={googleMapsDirectionsUrl}
+          target="_blank"
+          rel="noreferrer"
+          data-testid="link-street-view-directions"
+          className="focus-ring inline-flex min-h-14 items-center justify-center gap-2 rounded-lg bg-primary px-6 py-3 text-base font-bold text-primary-foreground transition-colors hover:bg-primary/90"
+        >
+          <Navigation className="size-5" /> Google Maps directions
+        </a>
+      </div>
+      <div className="overflow-hidden rounded-lg border border-border bg-secondary">
+        <iframe
+          title="Street View of Fairgrounds Dental Practice at 200 Fairgrounds Drive"
+          src={officeStreetViewUrl}
+          className="h-[300px] w-full border-0 sm:h-[380px]"
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+        />
+      </div>
+    </section>
+  );
+}
+
 function TrustStrip() {
   return (
     <section className="border-b border-border bg-card">
@@ -292,12 +344,12 @@ function AdaLogoStrip() {
               target="_blank"
               rel="noreferrer"
               data-testid="link-ada-wordmark"
-              className="focus-ring flex min-h-24 items-center justify-center rounded-lg border border-border bg-background px-5 py-4 transition-colors hover:bg-secondary/45"
+              className="focus-ring flex min-h-28 items-center justify-center rounded-lg border border-border bg-background px-5 py-5 transition-colors hover:bg-secondary/45"
             >
               <img
                 src="/images/affiliations/ada-wordmark.svg"
                 alt="American Dental Association"
-                className="max-h-12 w-full max-w-[260px] object-contain"
+                className="max-h-16 w-full max-w-[420px] object-contain"
                 loading="lazy"
               />
             </a>
@@ -326,7 +378,7 @@ function ServicePreview() {
           const Icon = service.icon;
           return (
             <Link
-              href="/services"
+              href={service.href ?? "/services"}
               key={service.title}
               data-testid={`card-service-${index}`}
               className="focus-ring group grid gap-4 bg-background py-6 transition-colors hover:bg-secondary/35 sm:grid-cols-[auto_1fr_auto] sm:items-center sm:gap-6"
@@ -411,20 +463,40 @@ function DoctorCard({
   name: string;
   coral?: boolean;
 }) {
+  const frameTone = coral ? "bg-accent/20" : "bg-secondary";
+  const railTone = coral ? "bg-accent" : "bg-primary";
+  const cornerTone = coral ? "bg-primary/15" : "bg-accent/35";
+
   return (
-    <div className="overflow-hidden rounded-lg border border-border bg-card">
+    <div className="h-full overflow-hidden rounded-lg border border-border bg-card shadow-[var(--shadow-card)]">
       <div
-        className={`flex aspect-[4/3] min-h-48 items-center justify-center overflow-hidden ${coral ? "bg-accent/35" : "bg-secondary"}`}
+        className={`relative isolate flex aspect-square min-h-48 items-center justify-center overflow-hidden p-3 sm:p-4 ${frameTone}`}
       >
+        <span
+          className={`absolute inset-y-0 left-0 w-2 ${railTone}`}
+          aria-hidden="true"
+        />
+        <span
+          className="absolute inset-x-0 bottom-0 h-[42%] bg-background/60"
+          aria-hidden="true"
+        />
+        <span
+          className={`absolute right-4 top-4 h-14 w-14 rounded-lg ${cornerTone}`}
+          aria-hidden="true"
+        />
         {imageSrc ? (
-          <img
-            src={imageSrc}
-            alt={imageAlt ?? `${name}, DDS`}
-            className="size-full object-cover object-top"
-            loading="lazy"
-          />
+          <div className="relative size-full overflow-hidden rounded-md border border-background/85 bg-card shadow-[0_16px_32px_hsl(201_37%_18%/.14)]">
+            <img
+              src={imageSrc}
+              alt={imageAlt ?? `${name}, DDS`}
+              className="size-full object-cover object-top"
+              width={800}
+              height={533}
+              loading="lazy"
+            />
+          </div>
         ) : (
-          <span className="grid size-24 place-items-center rounded-lg bg-background text-3xl font-bold text-primary shadow-sm">
+          <span className="relative grid size-24 place-items-center rounded-lg bg-background text-3xl font-bold text-primary shadow-sm">
             {initials}
           </span>
         )}
@@ -537,7 +609,7 @@ function ReviewPreview() {
 
 function LocationBlock() {
   return (
-    <section className="bg-primary py-16 text-background sm:py-20">
+    <section className="bg-primary pt-16 pb-0 text-background sm:py-20">
       <div className="container-wide grid gap-10 lg:grid-cols-[1fr_.8fr] lg:items-end">
         <div>
           <SectionHeading
@@ -573,7 +645,7 @@ function LocationBlock() {
             <br />
             Vallejo, CA 94589
           </p>
-          <div className="mt-5 flex gap-3">
+          <div className="mt-5 hidden gap-3 lg:flex">
                   <Clock3 className="mt-1 size-5 shrink-0 text-accent" />
                   <dl className="w-full max-w-[15rem] space-y-1">
                     <div className="flex items-baseline justify-between gap-6">
@@ -609,7 +681,7 @@ export function HomePage() {
     <>
       <PageMeta
         title="Fairgrounds Dental Practice | Vallejo, CA"
-        description="Family, cosmetic, emergency, and same-day crown dentistry in Vallejo. New patients welcome, most PPO insurance accepted, and Cherry financing available."
+        description="Family, cosmetic, emergency, and same-day crown dentistry in Vallejo. New patients welcome, most PPO insurance accepted, and financing available."
         path="/"
       />
       <main>
@@ -638,8 +710,8 @@ export function HomePage() {
                 >
                   <Phone className="size-5" /> Call 707-552-8195
                 </a>
-                                <a
-                  href="https://www.fairgroundsdental.com/services/emergency-dentistry"
+                <a
+                  href="tel:7075528195"
                   data-testid="link-home-emergency"
                   className="focus-ring inline-flex min-h-14 items-center justify-center gap-2 px-2 py-3 text-base font-extrabold text-red-700 underline decoration-red-700/35 underline-offset-4 transition-colors hover:text-red-800 hover:decoration-red-800"
                 >
@@ -650,7 +722,7 @@ export function HomePage() {
                 {[
                   "New patients welcome",
                   "Most PPO insurance accepted",
-                  "Cherry financing available",
+                  "Financing available",
                   "Same-day emergencies available",
                 ].map((item) => (
                   <span key={item} className="flex items-center gap-2">
@@ -677,7 +749,7 @@ export function HomePage() {
               <SectionHeading
                 eyebrow="Insurance and payment help"
                 title="Know the cost before treatment starts."
-                body="We accept most PPO insurance plans and can help you understand benefits before care begins. Cherry financing is available for eligible treatment."
+                body="We accept most PPO insurance plans and can help you understand benefits before care begins. Financing is available for eligible treatment."
               />
               <div className="mt-7 flex flex-wrap gap-2">
                 {[
@@ -713,7 +785,7 @@ export function HomePage() {
               <div className="divide-y divide-border">
                 {[
                   "Most PPO plans accepted",
-                  "Cherry financing available",
+                  "Financing available",
                   "A plan before treatment begins",
                 ].map((line) => (
                   <div
@@ -751,6 +823,18 @@ export function AboutPage() {
           eyebrow="A better kind of dental visit"
           title="A practice built around people."
           body="We’re here to make dental care feel more understandable, more comfortable, and more connected to the community we call home."
+          visual={
+            <div className="mx-auto w-full max-w-[520px] overflow-hidden rounded-lg border border-border bg-card shadow-[var(--shadow-soft)]">
+              <img
+                src="/images/office/dental-office-lobby-front-desk-vallejo-ca.jpg"
+                alt="Lobby and front desk at Fairgrounds Dental Practice in Vallejo, CA"
+                className="aspect-[4/3] w-full object-cover"
+                width={800}
+                height={533}
+                loading="eager"
+              />
+            </div>
+          }
         />
         <section className="container-wide grid gap-12 py-20 sm:py-28 lg:grid-cols-[.9fr_1.1fr] lg:items-center">
           <div className="rounded-lg border border-border bg-card p-6 shadow-[var(--shadow-card)] sm:p-8">
@@ -799,6 +883,7 @@ export function AboutPage() {
             </div>
           </div>
         </section>
+        <StreetViewSection />
         <section className="bg-secondary/55 py-20 sm:py-28">
           <div className="container-wide">
             <SectionHeading
@@ -837,6 +922,18 @@ export function ServicesPage() {
           eyebrow="Thoughtful care, all in one place"
           title="A complete plan for your smile."
           body="From prevention to the moments that need a little more expertise, our services are designed to keep your care close, clear, and comfortable."
+          visual={
+            <div className="mx-auto w-full max-w-[520px] overflow-hidden rounded-lg border border-border bg-card shadow-[var(--shadow-soft)]">
+              <img
+                src="/images/office/dental-office-lobby-front-desk-vallejo-ca.jpg"
+                alt="Lobby and front desk at Fairgrounds Dental Practice in Vallejo, CA"
+                className="aspect-[4/3] w-full object-cover"
+                width={800}
+                height={533}
+                loading="eager"
+              />
+            </div>
+          }
         />
         <section className="container-wide py-20 sm:py-28">
           <div className="grid gap-5 md:grid-cols-2">
@@ -865,13 +962,26 @@ export function ServicesPage() {
                   >
                     {service.text}
                   </p>
-                  <a
-                    href="tel:7075528195"
-                    data-testid={`link-service-call-${index}`}
-                    className={`focus-ring mt-8 inline-flex min-h-12 items-center gap-2 text-base font-bold ${index === 2 ? "text-accent" : "text-primary"}`}
-                  >
-                    Talk with our team <ArrowRight className="size-5" />
-                  </a>
+                  <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2">
+                    {service.href && (
+                      <Link
+                        href={service.href}
+                        data-testid={`link-service-detail-${index}`}
+                        className={`focus-ring inline-flex min-h-12 items-center gap-2 text-base font-bold ${index === 2 ? "text-accent" : "text-primary"}`}
+                      >
+                        {service.linkLabel ?? "Learn more"}{" "}
+                        <ArrowRight className="size-5" />
+                      </Link>
+                    )}
+                    <a
+                      href="tel:7075528195"
+                      data-testid={`link-service-call-${index}`}
+                      className={`focus-ring inline-flex min-h-12 items-center gap-2 text-base font-bold ${index === 2 ? "text-accent" : "text-primary"}`}
+                    >
+                      Talk with our team{" "}
+                      {!service.href && <ArrowRight className="size-5" />}
+                    </a>
+                  </div>
                 </article>
               );
             })}
@@ -899,6 +1009,621 @@ export function ServicesPage() {
   );
 }
 
+export function DentalImplantsPage() {
+  const benefits = [
+    {
+      title: "Built to last",
+      text: "Implants are a permanent solution designed to hold up under everyday biting and chewing.",
+      icon: ShieldCheck,
+    },
+    {
+      title: "Looks and feels natural",
+      text: "A custom crown is shaped and shaded to blend in with the rest of your smile.",
+      icon: Smile,
+    },
+    {
+      title: "Protects your jawbone",
+      text: "Unlike a bridge, an implant supports the bone underneath it instead of relying on nearby teeth.",
+      icon: Bone,
+    },
+    {
+      title: "Restores full function",
+      text: "Bite and chew with confidence, the same way you would with a natural tooth.",
+      icon: Utensils,
+    },
+  ];
+
+  const steps = [
+    {
+      title: "Consultation & imaging",
+      text: "We review your dental and health history and take the imaging needed to plan your case.",
+    },
+    {
+      title: "Implant placement",
+      text: "A titanium post is placed in the jawbone, where it will act as the new tooth root.",
+    },
+    {
+      title: "Healing time",
+      text: "Over the following weeks, the implant fuses with the bone to create a stable foundation.",
+    },
+    {
+      title: "Custom crown placement",
+      text: "A crown matched to your smile is attached, completing the restoration.",
+    },
+  ];
+
+  const faqs = [
+    {
+      q: "Does insurance cover dental implants?",
+      a: "Coverage varies by plan. Our team can help you check your PPO benefits, and financing is available for eligible care.",
+    },
+    {
+      q: "How long does the process take?",
+      a: "Timelines vary by case, from a few months to longer if healing or additional treatment is needed. We’ll walk you through a timeline at your consultation.",
+    },
+    {
+      q: "Is getting a dental implant painful?",
+      a: "Most patients report the procedure is no more uncomfortable than a tooth extraction, and we’ll go over comfort options with you beforehand.",
+    },
+    {
+      q: "How do I know if I’m a candidate?",
+      a: "Candidacy depends on your oral health and bone density. The best way to know is a consultation and imaging with our team.",
+    },
+  ];
+
+  const [open, setOpen] = useState<number | null>(0);
+
+  return (
+    <>
+      <PageMeta
+        title="Dental Implants in Vallejo, CA | Fairgrounds Dental Practice"
+        description="Replace a missing tooth with a dental implant at Fairgrounds Dental Practice in Vallejo, CA. See how the process works and request a consultation."
+        path="/services/dental-implants"
+        structuredData={[
+          {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              {
+                "@type": "ListItem",
+                position: 1,
+                name: "Home",
+                item: "https://fairgroundsdental.com/",
+              },
+              {
+                "@type": "ListItem",
+                position: 2,
+                name: "Services",
+                item: "https://fairgroundsdental.com/services",
+              },
+              {
+                "@type": "ListItem",
+                position: 3,
+                name: "Dental Implants",
+                item: "https://fairgroundsdental.com/services/dental-implants",
+              },
+            ],
+          },
+          {
+            "@context": "https://schema.org",
+            "@type": "MedicalProcedure",
+            name: "Dental Implants",
+            description:
+              "Surgical placement of a titanium implant post and custom crown to replace a missing tooth.",
+            provider: {
+              "@type": "Dentist",
+              name: "Fairgrounds Dental Practice",
+              telephone: "+1-707-552-8195",
+              address: {
+                "@type": "PostalAddress",
+                streetAddress: "200 Fairgrounds Dr",
+                addressLocality: "Vallejo",
+                addressRegion: "CA",
+                postalCode: "94589",
+                addressCountry: "US",
+              },
+            },
+          },
+        ]}
+      />
+      <main>
+        <PageIntro
+          eyebrow="Restorative care"
+          title="Dental implants that feel like your own teeth again."
+          body="A missing tooth affects more than your smile. An implant restores a stable, natural-feeling tooth so you can eat, speak, and smile with confidence."
+          breadcrumbs={[
+            { label: "Home", href: "/" },
+            { label: "Services", href: "/services" },
+            { label: "Dental Implants" },
+          ]}
+          visual={
+            <div className="mx-auto w-full max-w-[520px] overflow-hidden rounded-lg border border-border bg-card shadow-[var(--shadow-soft)]">
+              <img
+                src="/images/services/dental-implants.jpg"
+                alt="Illustration of a dental implant post, abutment, and crown next to a healthy tooth"
+                className="aspect-[4/3] w-full object-cover"
+                width={960}
+                height={720}
+                loading="eager"
+              />
+            </div>
+          }
+        >
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <ButtonLink href="/contact">Request a consultation</ButtonLink>
+            <a
+              href="tel:7075528195"
+              data-testid="link-implants-call"
+              className="focus-ring inline-flex min-h-14 items-center justify-center gap-2 rounded-lg border border-primary/25 bg-background px-6 py-3 text-base font-bold text-primary transition-colors hover:bg-secondary"
+            >
+              <Phone className="size-5" /> Call 707-552-8195
+            </a>
+          </div>
+        </PageIntro>
+
+        <section className="container-wide py-20 sm:py-28">
+          <SectionHeading
+            eyebrow="Why patients choose implants"
+            title="One tooth, replaced for good."
+          />
+          <div className="mt-10 grid gap-5 sm:grid-cols-2">
+            {benefits.map((benefit) => {
+              const Icon = benefit.icon;
+              return (
+                <article
+                  key={benefit.title}
+                  className="rounded-lg border border-border bg-card p-6 transition-colors hover:bg-secondary/35 sm:p-8"
+                >
+                  <span className="grid size-12 place-items-center rounded-lg bg-secondary text-primary">
+                    <Icon className="size-6" />
+                  </span>
+                  <h3 className="mt-6 text-xl font-bold">{benefit.title}</h3>
+                  <p className="mt-3 text-base leading-7 text-muted-foreground">
+                    {benefit.text}
+                  </p>
+                </article>
+              );
+            })}
+          </div>
+        </section>
+
+        <section className="bg-secondary/35 py-20 sm:py-28">
+          <div className="container-wide">
+            <SectionHeading
+              eyebrow="What to expect"
+              title="How the process works."
+              body="Every case is different, but most implants follow the same general path from consultation to a finished smile."
+            />
+            <div className="mt-10 grid gap-8 sm:grid-cols-2">
+              {steps.map((step, i) => (
+                <div key={step.title} className="flex gap-4">
+                  <span className="grid size-9 shrink-0 place-items-center rounded-full bg-accent text-base font-bold">
+                    {i + 1}
+                  </span>
+                  <div>
+                    <h3 className="text-xl font-bold">{step.title}</h3>
+                    <p className="mt-1 text-base leading-7 text-muted-foreground">
+                      {step.text}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="bg-foreground py-12 text-background sm:py-16">
+          <div className="container-wide grid gap-6 sm:grid-cols-3 sm:gap-8">
+            <div>
+              <p className="text-sm font-bold uppercase text-accent">
+                Is it right for you?
+              </p>
+              <p className="mt-2 text-base leading-7 text-background/80">
+                Candidacy depends on your oral health and bone density. A
+                consultation is the best way to find out.
+              </p>
+            </div>
+            <div>
+              <p className="text-sm font-bold uppercase text-accent">
+                Insurance
+              </p>
+              <p className="mt-2 text-base leading-7 text-background/80">
+                Most PPO plans accepted, including Delta Dental PPO, MetLife,
+                Humana, Guardian, Cigna, Zelis, and Argus.
+              </p>
+            </div>
+            <div>
+              <p className="text-sm font-bold uppercase text-accent">
+                Financing
+              </p>
+              <p className="mt-2 text-base leading-7 text-background/80">
+                Financing is available for eligible care. Ask our team
+                about your options.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section className="container-wide py-20 sm:py-28">
+          <div className="grid gap-12 lg:grid-cols-[.8fr_1.2fr]">
+            <SectionHeading
+              eyebrow="Common questions"
+              title="Dental implants, answered."
+            />
+            <div className="divide-y divide-border rounded-lg border border-border bg-card p-6 sm:p-8">
+              {faqs.map((faq, i) => (
+                <div key={faq.q}>
+                  <button
+                    type="button"
+                    aria-expanded={open === i}
+                    data-testid={`button-implants-faq-${i}`}
+                    onClick={() => setOpen(open === i ? null : i)}
+                    className="focus-ring flex min-h-14 w-full items-center justify-between gap-4 py-5 text-left text-base font-bold"
+                  >
+                    {faq.q}
+                    <ChevronDown
+                      className={`size-5 shrink-0 text-primary transition-transform ${open === i ? "rotate-180" : ""}`}
+                    />
+                  </button>
+                  {open === i && (
+                    <p className="animate-fade max-w-xl pb-5 pr-6 text-base leading-7 text-muted-foreground">
+                      {faq.a}
+                    </p>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="bg-primary py-16 text-background sm:py-20">
+          <div className="container-wide flex flex-col justify-between gap-8 sm:flex-row sm:items-center">
+            <div>
+              <p className="text-sm font-bold uppercase text-accent">
+                Ready to talk about implants?
+              </p>
+              <h2 className="mt-3 text-4xl font-bold leading-tight">
+                Let’s see if an implant is right for you.
+              </h2>
+              <p className="mt-3 max-w-xl text-base leading-7 text-background/80">
+                Request a consultation or call our team with any questions.
+              </p>
+            </div>
+            <div className="flex flex-col gap-3 sm:flex-row">
+              <ButtonLink href="/contact">Request a consultation</ButtonLink>
+              <Link
+                href="/services"
+                data-testid="link-implants-back-to-services"
+                className="focus-ring inline-flex min-h-14 items-center justify-center gap-2 rounded-lg border border-background/25 px-6 py-3 text-base font-bold text-background transition-colors hover:bg-background/10"
+              >
+                Back to all services
+              </Link>
+            </div>
+          </div>
+        </section>
+      </main>
+    </>
+  );
+}
+
+export function PediatricDentistryPage() {
+  const benefits = [
+    {
+      title: "Modern equipment",
+      text: "Up-to-date dental equipment chosen for efficiency and comfort at every visit.",
+      icon: Sparkles,
+    },
+    {
+      title: "Advanced training",
+      text: "Ongoing training in the most comfortable, thorough techniques for patients of every age.",
+      icon: GraduationCap,
+    },
+    {
+      title: "A relaxing waiting room",
+      text: "A calm space to settle in before an appointment, for kids and parents alike.",
+      icon: Sofa,
+    },
+    {
+      title: "A warm, friendly team",
+      text: "A staff that will always greet your family with a smile.",
+      icon: Smile,
+    },
+  ];
+
+  const faqs = [
+    {
+      q: "At what age should my child have their first visit?",
+      a: "Most dentists recommend a first visit around a child’s first birthday or once their first teeth arrive. Call our office and we can help you decide the right time.",
+    },
+    {
+      q: "Will Dr. Wid see my child?",
+      a: "Dr. Wid enjoys working with younger patients, and our team will do their best to schedule your child with her. Let us know your preference when you call or in your appointment request.",
+    },
+    {
+      q: "Do you accept my insurance for my child’s visit?",
+      a: "We accept most PPO insurance plans and can help you understand your benefits before care begins. Cherry financing is also available for eligible treatment.",
+    },
+    {
+      q: "What if my child is nervous about the dentist?",
+      a: "That’s common, and it’s what we plan for. We take extra time to explain what’s happening in a way kids understand and keep the visit relaxed and low-pressure.",
+    },
+  ];
+
+  const [open, setOpen] = useState<number | null>(0);
+
+  return (
+    <>
+      <PageMeta
+        title="Pediatric & Family Dentistry in Vallejo, CA | Fairgrounds Dental Practice"
+        description="Gentle, family-friendly dental care for kids and adults at Fairgrounds Dental Practice in Vallejo, CA. Meet Dr. Wid and request a visit for your family."
+        path="/services/pediatric-dentistry"
+        structuredData={[
+          {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              {
+                "@type": "ListItem",
+                position: 1,
+                name: "Home",
+                item: "https://fairgroundsdental.com/",
+              },
+              {
+                "@type": "ListItem",
+                position: 2,
+                name: "Services",
+                item: "https://fairgroundsdental.com/services",
+              },
+              {
+                "@type": "ListItem",
+                position: 3,
+                name: "Pediatric Dentistry",
+                item: "https://fairgroundsdental.com/services/pediatric-dentistry",
+              },
+            ],
+          },
+          {
+            "@context": "https://schema.org",
+            "@type": "MedicalProcedure",
+            name: "Pediatric & Family Dentistry",
+            description:
+              "Dental exams, cleanings, and preventive care for children and families, in a relaxed, kid-friendly environment.",
+            provider: {
+              "@type": "Dentist",
+              name: "Fairgrounds Dental Practice",
+              telephone: "+1-707-552-8195",
+              address: {
+                "@type": "PostalAddress",
+                streetAddress: "200 Fairgrounds Dr",
+                addressLocality: "Vallejo",
+                addressRegion: "CA",
+                postalCode: "94589",
+                addressCountry: "US",
+              },
+            },
+          },
+        ]}
+      />
+      <main>
+        <PageIntro
+          eyebrow="Family dentistry"
+          title="Dentistry the whole family can count on."
+          body="Fairgrounds Dental Practice offers dentistry for the entire family. Our office has experience caring for family members of differing ages, so one location can meet all of your family’s needs."
+          breadcrumbs={[
+            { label: "Home", href: "/" },
+            { label: "Services", href: "/services" },
+            { label: "Pediatric Dentistry" },
+          ]}
+          visual={
+            <div className="mx-auto w-full max-w-[520px] overflow-hidden rounded-lg border border-border bg-card shadow-[var(--shadow-soft)]">
+              <img
+                src="/images/doctors/dr-wid.jpg"
+                alt="Dr. Wid Al Hussain, DDS, with a young patient"
+                className="aspect-[4/3] w-full object-cover object-top"
+                width={800}
+                height={600}
+                loading="eager"
+              />
+              <div className="border-t border-border p-5 sm:p-6">
+                <p className="text-sm font-bold uppercase text-primary">
+                  Meet the doctor
+                </p>
+                <h2 className="mt-2 text-2xl font-bold leading-tight text-foreground">
+                  Dr. Wid Al Hussain
+                </h2>
+                <p className="mt-2 text-base leading-7 text-muted-foreground">
+                  Known for a calm, patient approach that puts nervous
+                  first-timers at ease.
+                </p>
+              </div>
+            </div>
+          }
+        >
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <ButtonLink href="/contact">Request a visit</ButtonLink>
+            <a
+              href="tel:7075528195"
+              data-testid="link-pediatric-call"
+              className="focus-ring inline-flex min-h-14 items-center justify-center gap-2 rounded-lg border border-primary/25 bg-background px-6 py-3 text-base font-bold text-primary transition-colors hover:bg-secondary"
+            >
+              <Phone className="size-5" /> Call 707-552-8195
+            </a>
+          </div>
+        </PageIntro>
+
+        <section className="container-wide py-20 sm:py-28">
+          <SectionHeading
+            eyebrow="What to expect"
+            title="Our patients’ satisfaction is our top priority."
+            body="We strive to exceed expectations through our professionalism and expertise, in an office built around comfort at every age."
+          />
+          <div className="mt-10 grid gap-5 sm:grid-cols-2">
+            {benefits.map((benefit) => {
+              const Icon = benefit.icon;
+              return (
+                <article
+                  key={benefit.title}
+                  className="rounded-lg border border-border bg-card p-6 transition-colors hover:bg-secondary/35 sm:p-8"
+                >
+                  <span className="grid size-12 place-items-center rounded-lg bg-secondary text-primary">
+                    <Icon className="size-6" />
+                  </span>
+                  <h3 className="mt-6 text-xl font-bold">{benefit.title}</h3>
+                  <p className="mt-3 text-base leading-7 text-muted-foreground">
+                    {benefit.text}
+                  </p>
+                </article>
+              );
+            })}
+          </div>
+        </section>
+
+        <section className="bg-secondary/35 py-20 sm:py-28">
+          <div className="container-wide grid gap-10 lg:grid-cols-[1fr_1fr] lg:items-center">
+            <SectionHeading
+              eyebrow="We work well with children"
+              title="A relaxed, happy appointment, from start to finish."
+              body="We are experienced in working with children and make it a priority to create an environment where they feel relaxed and happy throughout their appointment."
+            />
+            <div className="rounded-lg border border-border bg-card p-6 sm:p-8">
+              <span className="grid size-12 place-items-center rounded-lg bg-accent/40 text-primary">
+                <BadgeCheck className="size-6" />
+              </span>
+              <h3 className="mt-5 text-xl font-bold">
+                Hygiene, made simple
+              </h3>
+              <p className="mt-3 text-base leading-7 text-muted-foreground">
+                We gladly provide oral hygiene demonstrations for both young
+                ones and adults, so your whole family is confident in proper
+                brushing and flossing techniques.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section className="container-wide py-20 sm:py-28">
+          <div className="grid gap-10 lg:grid-cols-[.42fr_.58fr] lg:items-start">
+            <DoctorCard
+              description="General dentist, VCU School of Dentistry graduate, and OKU dental honor society member."
+              initials="WH"
+              imageAlt="Wid Al Hussain, DDS"
+              imageSrc="/images/doctors/dr-wid.jpg"
+              name="Wid Al Hussain"
+              coral
+            />
+            <div>
+              <p className="text-sm font-bold uppercase text-primary">
+                Meet Dr. Wid
+              </p>
+              <h2 className="mt-3 text-3xl font-bold leading-tight text-foreground sm:text-4xl">
+                A calm, careful approach that puts kids at ease.
+              </h2>
+              <p className="mt-5 text-base leading-7 text-muted-foreground">
+                Dr. Wid is known for her meticulous attention to detail and
+                her calm, thoughtful approach to patient care. She prioritizes
+                comfort, clarity, and a seamless experience, ensuring that
+                every patient — including your youngest ones — feels at ease
+                and confident throughout their visit.
+              </p>
+              <p className="mt-4 text-base leading-7 text-muted-foreground">
+                Let us know if you’d like your child to see Dr. Wid when you
+                call or request an appointment.
+              </p>
+              <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+                <ButtonLink href="/contact" secondary>
+                  Request a visit
+                </ButtonLink>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="bg-foreground py-12 text-background sm:py-16">
+          <div className="container-wide grid gap-6 sm:grid-cols-2 sm:gap-8">
+            <div>
+              <p className="text-sm font-bold uppercase text-accent">
+                Insurance
+              </p>
+              <p className="mt-2 text-base leading-7 text-background/80">
+                Most PPO plans accepted, including Delta Dental PPO, MetLife,
+                Humana, Guardian, Cigna, Zelis, and Argus.
+              </p>
+            </div>
+            <div>
+              <p className="text-sm font-bold uppercase text-accent">
+                Financing
+              </p>
+              <p className="mt-2 text-base leading-7 text-background/80">
+                Cherry financing is available for eligible care. Ask our team
+                about your options.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section className="container-wide py-20 sm:py-28">
+          <div className="grid gap-12 lg:grid-cols-[.8fr_1.2fr]">
+            <SectionHeading
+              eyebrow="Common questions"
+              title="Pediatric visits, answered."
+            />
+            <div className="divide-y divide-border rounded-lg border border-border bg-card p-6 sm:p-8">
+              {faqs.map((faq, i) => (
+                <div key={faq.q}>
+                  <button
+                    type="button"
+                    aria-expanded={open === i}
+                    data-testid={`button-pediatric-faq-${i}`}
+                    onClick={() => setOpen(open === i ? null : i)}
+                    className="focus-ring flex min-h-14 w-full items-center justify-between gap-4 py-5 text-left text-base font-bold"
+                  >
+                    {faq.q}
+                    <ChevronDown
+                      className={`size-5 shrink-0 text-primary transition-transform ${open === i ? "rotate-180" : ""}`}
+                    />
+                  </button>
+                  {open === i && (
+                    <p className="animate-fade max-w-xl pb-5 pr-6 text-base leading-7 text-muted-foreground">
+                      {faq.a}
+                    </p>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="bg-primary py-16 text-background sm:py-20">
+          <div className="container-wide flex flex-col justify-between gap-8 sm:flex-row sm:items-center">
+            <div>
+              <p className="text-sm font-bold uppercase text-accent">
+                We’re here to help
+              </p>
+              <h2 className="mt-3 text-4xl font-bold leading-tight">
+                Questions about family dentistry?
+              </h2>
+              <p className="mt-3 max-w-xl text-base leading-7 text-background/80">
+                Call our office at 707-552-8195 and we’ll be happy to assist
+                you.
+              </p>
+            </div>
+            <div className="flex flex-col gap-3 sm:flex-row">
+              <ButtonLink href="/contact">Request a visit</ButtonLink>
+              <Link
+                href="/services"
+                data-testid="link-pediatric-back-to-services"
+                className="focus-ring inline-flex min-h-14 items-center justify-center gap-2 rounded-lg border border-background/25 px-6 py-3 text-base font-bold text-background transition-colors hover:bg-background/10"
+              >
+                Back to all services
+              </Link>
+            </div>
+          </div>
+        </section>
+      </main>
+    </>
+  );
+}
+
 export function NewPatientsPage() {
   const [open, setOpen] = useState<number | null>(0);
   const faqs = [
@@ -912,14 +1637,14 @@ export function NewPatientsPage() {
     },
     {
       q: "Can I use financing?",
-      a: "Yes. Cherry financing is available for eligible care, so you can talk through a plan that fits your needs.",
+      a: "Yes. Financing is available for eligible care, so you can talk through a plan that fits your needs.",
     },
   ];
   return (
     <>
       <PageMeta
         title="New Patients | Fairgrounds Dental Practice"
-        description="New to Fairgrounds Dental Practice? Learn about insurance, Cherry financing, your first visit, and how to request an appointment."
+        description="New to Fairgrounds Dental Practice? Learn about insurance, financing, your first visit, and how to request an appointment."
         path="/new-patients"
       />
       <main>
@@ -1018,7 +1743,7 @@ export function NewPatientsPage() {
                 Financing
               </p>
               <p className="mt-2 text-base leading-7 text-background/80">
-                Cherry financing is available for eligible care. Ask our team
+                Financing is available for eligible care. Ask our team
                 about your options.
               </p>
             </div>
@@ -1252,35 +1977,7 @@ export function ContactPage() {
             <AppointmentForm />
           </div>
         </section>
-        <section className="container-wide pb-20 sm:pb-28">
-          <div className="mb-5 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <p className="text-sm font-bold uppercase text-primary">
-                Directions
-              </p>
-              <h2 className="mt-2 text-3xl font-bold leading-tight text-foreground">
-                Open the route before you leave.
-              </h2>
-            </div>
-            <a
-              href={googleMapsDirectionsUrl}
-              target="_blank"
-              rel="noreferrer"
-              data-testid="link-contact-map-directions"
-              className="focus-ring inline-flex min-h-14 items-center justify-center gap-2 rounded-lg bg-primary px-6 py-3 text-base font-bold text-primary-foreground transition-colors hover:bg-primary/90"
-            >
-              <Navigation className="size-5" /> Google Maps directions
-            </a>
-          </div>
-          <div className="overflow-hidden rounded-lg border border-border bg-secondary">
-            <iframe
-              title="Map showing Fairgrounds Dental Practice in Vallejo"
-              src="https://www.google.com/maps?q=200+Fairgrounds+Dr,+Vallejo,+CA+94589&output=embed"
-              className="h-[300px] w-full border-0 grayscale-[.2] sm:h-[380px]"
-              loading="lazy"
-            />
-          </div>
-        </section>
+        <StreetViewSection />
       </main>
     </>
   );

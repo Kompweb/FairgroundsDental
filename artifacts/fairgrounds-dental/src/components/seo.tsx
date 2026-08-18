@@ -4,6 +4,7 @@ type SeoProps = {
   title: string;
   description: string;
   path: string;
+  structuredData?: object[];
 };
 
 const practiceSchema = {
@@ -24,7 +25,12 @@ const practiceSchema = {
   url: 'https://fairgroundsdental.com',
 };
 
-export function PageMeta({ title, description, path }: SeoProps) {
+export function PageMeta({
+  title,
+  description,
+  path,
+  structuredData,
+}: SeoProps) {
   useEffect(() => {
     document.title = title;
     const setMeta = (name: string, content: string, property = false) => {
@@ -51,6 +57,24 @@ export function PageMeta({ title, description, path }: SeoProps) {
       document.head.appendChild(schema);
     }
     schema.textContent = JSON.stringify(practiceSchema);
-  }, [title, description, path]);
+
+    document
+      .querySelectorAll('[data-page-schema="true"]')
+      .forEach((tag) => tag.remove());
+    (structuredData ?? []).forEach((entry, index) => {
+      const tag = document.createElement('script');
+      tag.id = `fairgrounds-page-schema-${index}`;
+      tag.dataset.pageSchema = 'true';
+      tag.setAttribute('type', 'application/ld+json');
+      tag.textContent = JSON.stringify(entry);
+      document.head.appendChild(tag);
+    });
+
+    return () => {
+      document
+        .querySelectorAll('[data-page-schema="true"]')
+        .forEach((tag) => tag.remove());
+    };
+  }, [title, description, path, structuredData]);
   return null;
 }
