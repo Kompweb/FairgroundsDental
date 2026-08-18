@@ -47,7 +47,7 @@ export function Header() {
       <div className="container-wide flex min-h-[120px] items-center justify-between gap-4 pt-3 pb-2 sm:min-h-[140px] sm:pt-4 sm:pb-3 lg:min-h-[150px]">
         <Logo />
         <nav
-          className="hidden items-center gap-5 2xl:flex"
+          className="hidden items-center gap-5 xl:flex"
           aria-label="Main navigation"
         >
           {navItems.map((item) => (
@@ -62,7 +62,7 @@ export function Header() {
             </Link>
           ))}
         </nav>
-        <div className="hidden items-center gap-3 2xl:flex">
+        <div className="hidden items-center gap-3 xl:flex">
           <a
             href="tel:7075528195"
             data-testid="link-header-phone"
@@ -85,7 +85,7 @@ export function Header() {
           aria-label={open ? "Close menu" : "Open menu"}
           aria-expanded={open}
           data-testid="button-mobile-menu"
-          className="focus-ring grid size-[52px] shrink-0 place-items-center rounded-lg border border-primary/25 bg-secondary text-primary shadow-sm 2xl:hidden"
+          className="focus-ring grid size-[52px] shrink-0 place-items-center rounded-lg border border-primary/25 bg-secondary text-primary shadow-sm xl:hidden"
           onClick={() => setOpen(!open)}
         >
           {open ? (
@@ -96,7 +96,7 @@ export function Header() {
         </button>
       </div>
       {open && (
-        <div className="animate-fade border-t border-border/70 bg-card px-5 py-5 lg:hidden">
+        <div className="animate-fade border-t border-border/70 bg-card px-5 py-5 xl:hidden">
           <nav
             className="container-wide flex flex-col gap-1"
             aria-label="Mobile navigation"
