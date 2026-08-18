@@ -33,7 +33,7 @@ export function Logo() {
       <img
         src="/images/fairgroundsdental-logo.png"
         alt="Fairgrounds Dental Practice"
-        className="h-auto w-[min(64vw,180px)] max-w-none sm:w-[220px] lg:w-[250px]"
+        className="h-auto w-[min(51vw,144px)] max-w-none sm:w-[176px] lg:w-[200px]"
       />
     </Link>
   );
@@ -56,7 +56,7 @@ export function Header() {
               href={item.href}
               aria-current={location === item.href ? "page" : undefined}
               data-testid={`link-nav-${item.label.toLowerCase().replaceAll(" ", "-")}`}
-              className={`focus-ring text-[15px] font-semibold transition-colors hover:text-primary ${location === item.href ? "text-primary" : "text-muted-foreground"}`}
+              className={`focus-ring whitespace-nowrap text-[15px] font-semibold transition-colors hover:text-primary ${location === item.href ? "text-primary" : "text-muted-foreground"}`}
             >
               {item.label}
             </Link>
@@ -66,7 +66,7 @@ export function Header() {
           <a
             href="tel:7075528195"
             data-testid="link-header-phone"
-            className="focus-ring inline-flex min-h-12 items-center gap-2 rounded-lg border border-primary/25 px-4 text-base font-bold text-foreground transition-colors hover:bg-secondary hover:text-primary"
+            className="focus-ring inline-flex min-h-12 items-center gap-2 rounded-lg border border-primary/25 px-4 text-sm font-bold text-foreground transition-colors hover:bg-secondary hover:text-primary"
           >
             <Phone className="size-4 text-accent" aria-hidden="true" />
             <span>Call 707-552-8195</span>
@@ -74,7 +74,7 @@ export function Header() {
           <Link
             href="/contact"
             data-testid="link-header-appointment"
-            className="focus-ring inline-flex min-h-12 items-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-base font-bold text-primary-foreground transition-colors hover:bg-primary/90"
+            className="focus-ring inline-flex min-h-12 items-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary/90"
           >
             Request appointment{" "}
             <ArrowRight className="size-4" aria-hidden="true" />
@@ -222,6 +222,15 @@ export function Footer() {
             Find us
           </p>
           <div className="mt-5 space-y-4 text-base leading-7 text-background/80">
+            <div className="mb-4 overflow-hidden rounded-lg border border-background/15">
+              <iframe
+                title="Fairgrounds Dental Practice map"
+                src="https://www.google.com/maps?q=200+Fairgrounds+Dr,+Vallejo,+CA+94589&output=embed"
+                className="h-40 w-full"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
+            </div>
             <p className="flex gap-3">
               <MapPin className="mt-1 size-4 shrink-0 text-accent" />
               200 Fairgrounds Dr
@@ -238,12 +247,36 @@ export function Footer() {
               <Navigation className="size-4 text-accent" />
               Google Maps directions
             </a>
-            <p className="flex gap-3">
+            <div className="flex w-full gap-3 rounded-lg border border-background/15 px-4 py-3">
               <Clock3 className="mt-1 size-4 shrink-0 text-accent" />
-              Mon–Thu · 8am–5pm
-              <br />
-              Fri–Sun · Closed
-            </p>
+              <div className="min-w-0 flex-1">
+                <p className="text-sm font-bold uppercase tracking-[0.12em] text-background/65">
+                  Office hours
+                </p>
+                <dl className="mt-2 grid w-full gap-x-6 gap-y-1.5 text-base sm:grid-cols-2">
+                  <div className="flex justify-between gap-5">
+                    <dt>Monday</dt>
+                    <dd className="font-semibold text-background">8am–5pm</dd>
+                  </div>
+                  <div className="flex justify-between gap-5">
+                    <dt>Tuesday</dt>
+                    <dd className="font-semibold text-background">8am–5pm</dd>
+                  </div>
+                  <div className="flex justify-between gap-5">
+                    <dt>Wednesday</dt>
+                    <dd className="font-semibold text-background">8am–5pm</dd>
+                  </div>
+                  <div className="flex justify-between gap-5">
+                    <dt>Thursday</dt>
+                    <dd className="font-semibold text-background">8am–5pm</dd>
+                  </div>
+                  <div className="flex justify-between gap-5 sm:col-span-2">
+                    <dt>Friday–Sunday</dt>
+                    <dd className="font-semibold text-background">Closed</dd>
+                  </div>
+                </dl>
+              </div>
+            </div>
           </div>
         </div>
       </div>
