@@ -9,6 +9,7 @@ import {
   useLocation,
 } from 'wouter';
 import { SiteShell } from '@/components/site-shell';
+import { APPOINTMENT_FORM_ID } from '@/lib/appointment-link';
 import {
   AboutPage,
   ContactPage,
@@ -23,10 +24,54 @@ import {
 
 const queryClient = new QueryClient();
 
+function scrollToHashTarget(hash = window.location.hash): boolean {
+  if (!hash) {
+    return false;
+  }
+
+  const id = decodeURIComponent(hash.slice(1));
+  if (!id) {
+    return false;
+  }
+
+  const target = document.getElementById(id);
+  if (!target) {
+    return false;
+  }
+
+  const reduceMotion = window.matchMedia(
+    '(prefers-reduced-motion: reduce)'
+  ).matches;
+
+  target.scrollIntoView({
+    block: 'start',
+    behavior: reduceMotion ? 'auto' : 'smooth',
+  });
+
+  if (id === APPOINTMENT_FORM_ID && target instanceof HTMLElement) {
+    target.focus({ preventScroll: true });
+  }
+
+  return true;
+}
+
+function scrollToHashTargetWhenReady(hash = window.location.hash, attempt = 0) {
+  window.requestAnimationFrame(() => {
+    if (!scrollToHashTarget(hash) && attempt < 8) {
+      scrollToHashTargetWhenReady(hash, attempt + 1);
+    }
+  });
+}
+
 function ScrollToTop() {
   const [location] = useLocation();
 
   useEffect(() => {
+    if (window.location.hash) {
+      scrollToHashTargetWhenReady();
+      return;
+    }
+
     window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
   }, [location]);
 
@@ -52,11 +97,26 @@ function ScrollToTop() {
         !link ||
         link.target ||
         link.hasAttribute('download') ||
-        link.hash ||
         link.protocol === 'tel:' ||
         link.protocol === 'mailto:' ||
         link.origin !== window.location.origin
       ) {
+        return;
+      }
+
+      if (link.hash) {
+        event.preventDefault();
+
+        const destination = `${link.pathname}${link.search}${link.hash}`;
+        if (
+          link.pathname !== window.location.pathname ||
+          link.search !== window.location.search ||
+          link.hash !== window.location.hash
+        ) {
+          window.history.pushState(null, '', destination);
+        }
+
+        scrollToHashTargetWhenReady(link.hash);
         return;
       }
 
@@ -68,8 +128,8 @@ function ScrollToTop() {
       }
     };
 
-    document.addEventListener('click', handleClick);
-    return () => document.removeEventListener('click', handleClick);
+    document.addEventListener('click', handleClick, true);
+    return () => document.removeEventListener('click', handleClick, true);
   }, []);
 
   return null;

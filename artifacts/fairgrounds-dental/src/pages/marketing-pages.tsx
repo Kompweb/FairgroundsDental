@@ -1,4 +1,4 @@
-import { type ReactNode, useState } from "react";
+import { type ReactNode, useEffect, useState } from "react";
 import { Link } from "wouter";
 import {
   ArrowRight,
@@ -27,6 +27,10 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { AppointmentForm } from "@/components/appointment-form";
+import {
+  APPOINTMENT_FORM_ID,
+  APPOINTMENT_FORM_PATH,
+} from "@/lib/appointment-link";
 import { PageMeta } from "@/components/seo";
 import { PageIntro, SectionHeading } from "@/components/site-shell";
 
@@ -37,6 +41,23 @@ const officeStreetViewUrl =
   "https://maps.google.com/maps?layer=c&cbll=38.123656,-122.230785&cbp=11,285,0,0,0&output=svembed";
 
 const googleReviewUrl = "https://maps.app.goo.gl/mrXCci19eGsuxRmQA";
+
+const officeGalleryImages = [
+  {
+    src: "/images/office/dental-office-lobby-front-desk-vallejo-ca.jpg",
+    alt: "Lobby and front desk at Fairgrounds Dental Practice in Vallejo, CA",
+    label: "lobby and front desk photo",
+    width: 800,
+    height: 533,
+  },
+  {
+    src: "/images/office/dental-office-waiting-room-vallejo-ca.jpg",
+    alt: "Waiting room at Fairgrounds Dental Practice in Vallejo, CA",
+    label: "waiting room photo",
+    width: 960,
+    height: 641,
+  },
+];
 
 const services: {
   title: string;
@@ -127,10 +148,15 @@ function ButtonLink({
   children: ReactNode;
   secondary?: boolean;
 }) {
+  const testId =
+    href === APPOINTMENT_FORM_PATH
+      ? "link-cta-appointment"
+      : `link-cta-${href.replace("/", "") || "home"}`;
+
   return (
     <Link
       href={href}
-      data-testid={`link-cta-${href.replace("/", "") || "home"}`}
+      data-testid={testId}
       className={`focus-ring inline-flex min-h-14 items-center justify-center gap-2 rounded-lg px-6 py-3 text-base font-bold transition-colors ${secondary ? "border border-primary/25 bg-background text-primary hover:bg-secondary" : "bg-primary text-primary-foreground hover:bg-primary/90"}`}
     >
       {children}
@@ -167,20 +193,57 @@ function GoogleRatingBadge({ compact = false }: { compact?: boolean }) {
 }
 
 function HeroVisual() {
+  const [activeImageIndex, setActiveImageIndex] = useState(0);
+
+  useEffect(() => {
+    const intervalId = window.setInterval(() => {
+      setActiveImageIndex((currentIndex) =>
+        (currentIndex + 1) % officeGalleryImages.length
+      );
+    }, 4500);
+
+    return () => window.clearInterval(intervalId);
+  }, []);
+
   return (
     <aside
       className="mx-auto w-full max-w-[520px] overflow-hidden rounded-lg border border-border bg-card shadow-[var(--shadow-soft)]"
       aria-label="Fairgrounds Dental office location"
     >
-      <div className="bg-secondary">
-        <img
-          src="/images/office/dental-office-lobby-front-desk-vallejo-ca.jpg"
-          alt="Lobby and front desk at Fairgrounds Dental Practice in Vallejo, CA"
-          className="aspect-[4/3] w-full object-cover"
-          width={800}
-          height={533}
-          loading="eager"
-        />
+      <div
+        className="relative aspect-[3/2] overflow-hidden bg-secondary"
+        aria-label="Fairgrounds Dental office photo gallery"
+      >
+        {officeGalleryImages.map((image, index) => (
+          <img
+            key={image.src}
+            src={image.src}
+            alt={image.alt}
+            className={`pointer-events-none absolute inset-0 h-full w-full object-contain transition-opacity duration-700 ease-in-out motion-reduce:transition-none ${
+              index === activeImageIndex ? "opacity-100" : "opacity-0"
+            }`}
+            width={image.width}
+            height={image.height}
+            loading={index === 0 ? "eager" : "lazy"}
+            aria-hidden={index !== activeImageIndex}
+          />
+        ))}
+        <div className="absolute inset-x-0 bottom-3 flex justify-center gap-2">
+          {officeGalleryImages.map((image, index) => (
+            <button
+              key={image.src}
+              type="button"
+              aria-label={`Show ${image.label}`}
+              aria-current={index === activeImageIndex ? "true" : undefined}
+              onClick={() => setActiveImageIndex(index)}
+              className={`focus-ring size-3 rounded-full border border-background/90 transition-colors ${
+                index === activeImageIndex
+                  ? "bg-accent"
+                  : "bg-background/75 hover:bg-background"
+              }`}
+            />
+          ))}
+        </div>
       </div>
       <div className="border-t border-border p-5 sm:p-6">
         <p className="text-sm font-bold uppercase text-primary">
@@ -619,7 +682,7 @@ function LocationBlock() {
             body="Find us on Fairgrounds Drive. We’re easy to reach and ready when your family needs a dental home."
           />
           <div className="mt-8 flex flex-wrap gap-3">
-            <ButtonLink href="/contact">Plan your visit</ButtonLink>
+            <ButtonLink href={APPOINTMENT_FORM_PATH}>Plan your visit</ButtonLink>
             <a
               href={googleMapsDirectionsUrl}
               target="_blank"
@@ -702,7 +765,9 @@ export function HomePage() {
                 <GoogleRatingBadge compact />
               </div>
               <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-                <ButtonLink href="/contact">Request appointment</ButtonLink>
+                <ButtonLink href={APPOINTMENT_FORM_PATH}>
+                  Request appointment
+                </ButtonLink>
                 <a
                   href="tel:7075528195"
                   data-testid="link-home-call"
@@ -740,6 +805,43 @@ export function HomePage() {
           </div>
         </section>
         <TrustStrip />
+        <section
+          id={APPOINTMENT_FORM_ID}
+          data-appointment-form-panel
+          tabIndex={-1}
+          className="scroll-mt-44 bg-secondary/55 py-20 outline-none sm:scroll-mt-52 sm:py-28"
+        >
+          <div className="container-wide grid gap-10 lg:grid-cols-[.85fr_1.15fr]">
+            <div>
+              <SectionHeading
+                eyebrow="Appointments"
+                title="Start with a conversation."
+                body="Send a request and our team will follow up during office hours. Or call if you’d rather talk it through."
+              />
+              <a
+                href="tel:7075528195"
+                data-testid="link-home-form-call"
+                className="focus-ring mt-8 inline-flex min-h-14 items-center justify-center gap-2 rounded-lg border border-primary/25 bg-background px-6 py-3 text-base font-bold text-primary transition-colors hover:bg-secondary"
+              >
+                <Phone className="size-5" /> Call 707-552-8195
+              </a>
+            </div>
+            <div className="rounded-lg border border-border bg-card p-6 sm:p-8">
+              <div className="mb-7 flex items-start justify-between gap-4">
+                <div>
+                  <p className="text-sm font-bold uppercase text-primary">
+                    Request a visit
+                  </p>
+                  <h2 className="mt-2 text-3xl font-bold">
+                    Tell us a little about what you need.
+                  </h2>
+                </div>
+                <CalendarDays className="size-8 text-accent" />
+              </div>
+              <AppointmentForm />
+            </div>
+          </div>
+        </section>
         <AdaLogoStrip />
         <ServicePreview />
         <DoctorMini />
@@ -901,7 +1003,9 @@ export function AboutPage() {
             Come in for the dentistry. Stay for the way you’re treated.
           </h2>
           <div className="mt-8">
-            <ButtonLink href="/contact">Meet us in Vallejo</ButtonLink>
+            <ButtonLink href={APPOINTMENT_FORM_PATH}>
+              Meet us in Vallejo
+            </ButtonLink>
           </div>
         </section>
       </main>
@@ -1001,7 +1105,9 @@ export function ServicesPage() {
                 cleaning, consultation, or urgent visit.
               </p>
             </div>
-            <ButtonLink href="/contact">Request a visit</ButtonLink>
+            <ButtonLink href={APPOINTMENT_FORM_PATH}>
+              Request a visit
+            </ButtonLink>
           </div>
         </section>
       </main>
@@ -1150,7 +1256,9 @@ export function DentalImplantsPage() {
           }
         >
           <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-            <ButtonLink href="/contact">Request a consultation</ButtonLink>
+            <ButtonLink href={APPOINTMENT_FORM_PATH}>
+              Request a consultation
+            </ButtonLink>
             <a
               href="tel:7075528195"
               data-testid="link-implants-call"
@@ -1290,7 +1398,9 @@ export function DentalImplantsPage() {
               </p>
             </div>
             <div className="flex flex-col gap-3 sm:flex-row">
-              <ButtonLink href="/contact">Request a consultation</ButtonLink>
+              <ButtonLink href={APPOINTMENT_FORM_PATH}>
+                Request a consultation
+              </ButtonLink>
               <Link
                 href="/services"
                 data-testid="link-implants-back-to-services"
@@ -1440,7 +1550,9 @@ export function PediatricDentistryPage() {
           }
         >
           <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-            <ButtonLink href="/contact">Request a visit</ButtonLink>
+            <ButtonLink href={APPOINTMENT_FORM_PATH}>
+              Request a visit
+            </ButtonLink>
             <a
               href="tel:7075528195"
               data-testid="link-pediatric-call"
@@ -1530,7 +1642,7 @@ export function PediatricDentistryPage() {
                 call or request an appointment.
               </p>
               <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-                <ButtonLink href="/contact" secondary>
+                <ButtonLink href={APPOINTMENT_FORM_PATH} secondary>
                   Request a visit
                 </ButtonLink>
               </div>
@@ -1608,7 +1720,9 @@ export function PediatricDentistryPage() {
               </p>
             </div>
             <div className="flex flex-col gap-3 sm:flex-row">
-              <ButtonLink href="/contact">Request a visit</ButtonLink>
+              <ButtonLink href={APPOINTMENT_FORM_PATH}>
+                Request a visit
+              </ButtonLink>
               <Link
                 href="/services"
                 data-testid="link-pediatric-back-to-services"
@@ -1693,7 +1807,7 @@ export function NewPatientsPage() {
               >
                 <Phone className="size-5" /> Questions? Call 707-552-8195
               </a>
-              <ButtonLink href="/contact" secondary>
+              <ButtonLink href={APPOINTMENT_FORM_PATH} secondary>
                 Request a visit
               </ButtonLink>
             </div>
@@ -1764,7 +1878,10 @@ export function NewPatientsPage() {
             </div>
           </div>
         </section>
-        <section className="bg-secondary/55 py-20 sm:py-28">
+        <section
+          tabIndex={-1}
+          className="scroll-mt-44 bg-secondary/55 py-20 outline-none sm:scroll-mt-52 sm:py-28"
+        >
           <div className="container-wide grid gap-10 lg:grid-cols-[.85fr_1.15fr]">
             <div>
               <SectionHeading

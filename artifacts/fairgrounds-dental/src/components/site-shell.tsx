@@ -10,6 +10,7 @@ import {
   Phone,
   X,
 } from "lucide-react";
+import { APPOINTMENT_FORM_PATH } from "@/lib/appointment-link";
 
 const navItems = [
   { href: "/", label: "Home" },
@@ -83,7 +84,7 @@ export function Header({
             <span>Call 707-552-8195</span>
           </a>
           <Link
-            href="/contact"
+            href={APPOINTMENT_FORM_PATH}
             data-testid="link-header-appointment"
             className="focus-ring inline-flex min-h-12 items-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary/90"
           >
@@ -124,7 +125,7 @@ export function Header({
               </Link>
             ))}
             <Link
-              href="/contact"
+              href={APPOINTMENT_FORM_PATH}
               onClick={() => setOpen(false)}
               data-testid="link-mobile-appointment"
               className="focus-ring mt-3 flex min-h-12 items-center justify-center gap-2 rounded-xl bg-primary px-3 py-3 font-semibold text-primary-foreground"

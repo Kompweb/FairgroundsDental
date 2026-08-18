@@ -194,7 +194,7 @@ a[class*="min-h-8"] {
 }
 
 /* appointment-yellow-cta */
-a[data-testid="link-cta-contact"],
+a[data-testid="link-cta-appointment"],
 a[data-testid="link-header-appointment"],
 a[data-testid="link-mobile-appointment"],
 a[data-testid="link-mobile-sticky-appointment"],
@@ -205,13 +205,21 @@ button[data-testid="button-new-appointment-request"] {
   color: #173244 !important;
   box-shadow: 0 8px 20px hsl(45 90% 42% / 0.24) !important;
 }
-a[data-testid="link-cta-contact"]:hover,
+a[data-testid="link-cta-appointment"]:hover,
 a[data-testid="link-header-appointment"]:hover,
 a[data-testid="link-mobile-appointment"]:hover,
 a[data-testid="link-mobile-sticky-appointment"]:hover,
 button[data-testid="button-submit-appointment"]:hover,
 button[data-testid="button-new-appointment-request"]:hover {
   background-color: #eab308 !important;
+}
+
+section[data-appointment-form-panel] {
+  display: none;
+}
+
+section[data-appointment-form-panel]:target {
+  display: block;
 }
 
 /* urgent-call-small-exception */

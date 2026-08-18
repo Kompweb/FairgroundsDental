@@ -1,5 +1,6 @@
 import { CalendarDays, Phone } from "lucide-react";
 import { Link } from "wouter";
+import { APPOINTMENT_FORM_PATH } from "@/lib/appointment-link";
 
 export default function MobileActionBar() {
   return (
@@ -16,7 +17,7 @@ export default function MobileActionBar() {
           <Phone className="size-5" /> Call office
         </a>
         <Link
-          href="/contact"
+          href={APPOINTMENT_FORM_PATH}
           data-testid="link-mobile-sticky-appointment"
           className="focus-ring flex min-h-14 items-center justify-center gap-2 rounded-lg bg-primary px-2 text-base font-bold text-primary-foreground"
         >
