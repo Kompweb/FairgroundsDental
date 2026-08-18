@@ -23,9 +23,25 @@ import {
 } from '@/pages/marketing-pages';
 
 const queryClient = new QueryClient();
+const APPOINTMENT_PANEL_ACTIVE = 'appointmentPanelActive';
+
+function setAppointmentPanelActive(active: boolean) {
+  const panel = document.getElementById(APPOINTMENT_FORM_ID);
+
+  if (!(panel instanceof HTMLElement)) {
+    return;
+  }
+
+  if (active) {
+    panel.dataset[APPOINTMENT_PANEL_ACTIVE] = 'true';
+  } else {
+    delete panel.dataset[APPOINTMENT_PANEL_ACTIVE];
+  }
+}
 
 function scrollToHashTarget(hash = window.location.hash): boolean {
   if (!hash) {
+    setAppointmentPanelActive(false);
     return false;
   }
 
@@ -39,18 +55,23 @@ function scrollToHashTarget(hash = window.location.hash): boolean {
     return false;
   }
 
+  setAppointmentPanelActive(id === APPOINTMENT_FORM_ID);
+
   const reduceMotion = window.matchMedia(
     '(prefers-reduced-motion: reduce)'
   ).matches;
 
-  target.scrollIntoView({
-    block: 'start',
-    behavior: reduceMotion ? 'auto' : 'smooth',
-  });
+  window.requestAnimationFrame(() => {
+    window.scrollTo({
+      top: target.getBoundingClientRect().top + window.scrollY,
+      left: 0,
+      behavior: reduceMotion ? 'auto' : 'smooth',
+    });
 
-  if (id === APPOINTMENT_FORM_ID && target instanceof HTMLElement) {
-    target.focus({ preventScroll: true });
-  }
+    if (id === APPOINTMENT_FORM_ID && target instanceof HTMLElement) {
+      target.focus({ preventScroll: true });
+    }
+  });
 
   return true;
 }
@@ -72,6 +93,7 @@ function ScrollToTop() {
       return;
     }
 
+    setAppointmentPanelActive(false);
     window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
   }, [location]);
 

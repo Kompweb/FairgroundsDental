@@ -809,7 +809,7 @@ export function HomePage() {
           id={APPOINTMENT_FORM_ID}
           data-appointment-form-panel
           tabIndex={-1}
-          className="scroll-mt-44 bg-secondary/55 py-20 outline-none sm:scroll-mt-52 sm:py-28"
+          className="bg-secondary/55 py-20 outline-none sm:py-28"
         >
           <div className="container-wide grid gap-10 lg:grid-cols-[.85fr_1.15fr]">
             <div>
@@ -836,7 +836,7 @@ export function HomePage() {
                     Tell us a little about what you need.
                   </h2>
                 </div>
-                <CalendarDays className="size-8 text-accent" />
+                <CalendarDays className="size-8 shrink-0 text-accent" />
               </div>
               <AppointmentForm />
             </div>
@@ -2089,7 +2089,7 @@ export function ContactPage() {
                   Tell us a little about what you need.
                 </h2>
               </div>
-              <CalendarDays className="size-8 text-accent" />
+              <CalendarDays className="size-8 shrink-0 text-accent" />
             </div>
             <AppointmentForm />
           </div>

@@ -249,7 +249,7 @@ export function AppointmentForm({ compact = false }: { compact?: boolean }) {
       >
         <div className="flex items-start gap-3">
           <span className="grid size-11 shrink-0 place-items-center rounded-lg bg-background text-primary">
-            <CalendarDays className="size-6" aria-hidden="true" />
+            <CalendarDays className="size-6 shrink-0" aria-hidden="true" />
           </span>
           <div>
             <h3

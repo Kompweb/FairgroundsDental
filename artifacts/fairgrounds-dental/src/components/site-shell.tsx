@@ -130,7 +130,7 @@ export function Header({
               data-testid="link-mobile-appointment"
               className="focus-ring mt-3 flex min-h-12 items-center justify-center gap-2 rounded-xl bg-primary px-3 py-3 font-semibold text-primary-foreground"
             >
-              <CalendarDays className="size-4" /> Request an appointment
+              <CalendarDays className="size-4 shrink-0" /> Request an appointment
             </Link>
             <a
               href="tel:7075528195"
