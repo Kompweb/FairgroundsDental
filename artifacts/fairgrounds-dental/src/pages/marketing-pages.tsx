@@ -573,12 +573,31 @@ function LocationBlock() {
             <br />
             Vallejo, CA 94589
           </p>
-          <p className="mt-5 flex gap-3">
-            <Clock3 className="size-5 shrink-0 text-accent" />
-            Monday–Thursday, 8am–5pm
-            <br />
-            Friday–Sunday, closed
-          </p>
+          <div className="mt-5 flex gap-3">
+                  <Clock3 className="mt-1 size-5 shrink-0 text-accent" />
+                  <dl className="w-full max-w-[15rem] space-y-1">
+                    <div className="flex items-baseline justify-between gap-6">
+                      <dt>Monday</dt>
+                      <dd className="whitespace-nowrap font-semibold">8am–5pm</dd>
+                    </div>
+                    <div className="flex items-baseline justify-between gap-6">
+                      <dt>Tuesday</dt>
+                      <dd className="whitespace-nowrap font-semibold">8am–5pm</dd>
+                    </div>
+                    <div className="flex items-baseline justify-between gap-6">
+                      <dt>Wednesday</dt>
+                      <dd className="whitespace-nowrap font-semibold">8am–5pm</dd>
+                    </div>
+                    <div className="flex items-baseline justify-between gap-6">
+                      <dt>Thursday</dt>
+                      <dd className="whitespace-nowrap font-semibold">8am–5pm</dd>
+                    </div>
+                    <div className="flex items-baseline justify-between gap-6">
+                      <dt>Friday–Sunday</dt>
+                      <dd className="whitespace-nowrap font-semibold">Closed</dd>
+                    </div>
+                  </dl>
+                </div>
         </div>
       </div>
     </section>
@@ -600,7 +619,7 @@ export function HomePage() {
               <p className="inline-flex items-center gap-2 rounded-lg border border-primary/20 bg-secondary px-4 py-2 text-sm font-bold uppercase text-primary">
                 Fairgrounds Dental · Vallejo, CA
               </p>
-              <h1 className="mt-6 max-w-3xl text-[2.85rem] font-bold leading-tight text-foreground sm:text-5xl lg:text-6xl">
+              <h1 className="font-logo mt-6 max-w-3xl text-[2.85rem] font-extrabold leading-tight text-foreground sm:text-5xl lg:text-6xl">
                 Family, cosmetic, emergency, and same-day crown dental care.
               </h1>
               <p className="mt-6 max-w-2xl text-xl leading-9 text-muted-foreground">
@@ -1191,12 +1210,30 @@ export function ContactPage() {
                   </span>
                 </span>
               </a>
-              <div className="flex items-start gap-4 p-5">
+              <div className="flex items-start gap-4 rounded-lg border border-border bg-card p-5">
                 <Clock3 className="mt-1 size-6 shrink-0 text-accent" />
-                <p className="text-base leading-7">
-                  <strong className="block">Monday–Thursday · 8am–5pm</strong>
-                  Friday–Sunday · Closed
-                </p>
+                <dl className="w-full max-w-[18rem] space-y-1 text-base leading-7">
+                    <div className="flex items-baseline justify-between gap-6">
+                      <dt>Monday</dt>
+                      <dd className="whitespace-nowrap font-semibold">8am–5pm</dd>
+                    </div>
+                    <div className="flex items-baseline justify-between gap-6">
+                      <dt>Tuesday</dt>
+                      <dd className="whitespace-nowrap font-semibold">8am–5pm</dd>
+                    </div>
+                    <div className="flex items-baseline justify-between gap-6">
+                      <dt>Wednesday</dt>
+                      <dd className="whitespace-nowrap font-semibold">8am–5pm</dd>
+                    </div>
+                    <div className="flex items-baseline justify-between gap-6">
+                      <dt>Thursday</dt>
+                      <dd className="whitespace-nowrap font-semibold">8am–5pm</dd>
+                    </div>
+                    <div className="flex items-baseline justify-between gap-6">
+                      <dt>Friday–Sunday</dt>
+                      <dd className="whitespace-nowrap font-semibold">Closed</dd>
+                    </div>
+                  </dl>
               </div>
             </div>
           </div>
@@ -1259,7 +1296,7 @@ export function NotFoundPage() {
       />
       <main className="container-wide flex min-h-[65vh] flex-col items-start justify-center py-20">
         <p className="text-sm font-bold uppercase text-primary">404</p>
-        <h1 className="mt-4 text-5xl font-bold leading-tight">
+        <h1 className="font-logo mt-4 text-5xl font-extrabold leading-tight">
           That page took a wrong turn.
         </h1>
         <p className="mt-5 max-w-md text-lg text-muted-foreground">

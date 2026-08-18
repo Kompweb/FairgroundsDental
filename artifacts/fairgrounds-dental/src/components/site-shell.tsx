@@ -3,7 +3,6 @@ import { Link, useLocation } from "wouter";
 import {
   ArrowRight,
   CalendarDays,
-  Clock3,
   MapPin,
   Menu,
   Navigation,
@@ -183,50 +182,52 @@ export function MobileActionBar() {
 export function Footer() {
   return (
     <footer className="bg-primary pb-20 text-background lg:pb-0">
-      <div className="container-wide grid gap-12 py-14 md:grid-cols-[1.25fr_1fr_1fr] md:py-20">
-        <div>
-          <p className="text-xl font-bold text-background">
-            Fairgrounds Dental Practice
-          </p>
-          <p className="mt-4 max-w-sm text-base leading-7 text-background/80">
-            Thoughtful dentistry for Vallejo families, with clear answers,
-            insurance help, and a direct phone line when you need us.
-          </p>
-          <a
-            href="tel:7075528195"
-            data-testid="link-footer-phone"
-            className="focus-ring mt-6 inline-flex min-h-12 items-center gap-2 rounded-lg bg-accent px-4 text-base font-bold text-accent-foreground"
-          >
-            <Phone className="size-5" /> 707-552-8195
-          </a>
-        </div>
-        <div>
-          <p className="text-sm font-bold uppercase text-background/65">
-            Explore
-          </p>
-          <div className="mt-5 flex flex-col items-start gap-3 text-base text-background/80">
-            {navItems.slice(0, 4).map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                data-testid={`link-footer-${item.label.toLowerCase().replaceAll(" ", "-")}`}
-                className="focus-ring transition-colors hover:text-accent"
-              >
-                {item.label}
-              </Link>
-            ))}
+      <div className="container-wide grid gap-10 py-14 md:py-20 lg:grid-cols-[1fr_.8fr]">
+        <div className="grid gap-10 sm:grid-cols-2">
+          <div>
+            <p className="text-2xl font-bold text-background">
+              Fairgrounds Dental Practice
+            </p>
+            <p className="mt-4 max-w-md text-lg leading-8 text-background/80">
+              Thoughtful dentistry for Vallejo families, with clear answers,
+              insurance help, and a direct phone line when you need us.
+            </p>
+            <a
+              href="tel:7075528195"
+              data-testid="link-footer-phone"
+              className="focus-ring mt-6 inline-flex min-h-12 items-center gap-2 rounded-lg bg-accent px-5 text-lg font-bold text-accent-foreground"
+            >
+              <Phone className="size-5" /> 707-552-8195
+            </a>
+          </div>
+          <div>
+            <p className="text-base font-bold uppercase tracking-[0.12em] text-background/70">
+              Explore
+            </p>
+            <div className="mt-5 flex flex-col items-start gap-3 text-lg text-background/80">
+              {navItems.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  data-testid={`link-footer-${item.label.toLowerCase().replaceAll(" ", "-")}`}
+                  className="focus-ring transition-colors hover:text-accent"
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </div>
           </div>
         </div>
-        <div>
-          <p className="text-sm font-bold uppercase text-background/65">
+        <div className="lg:pl-8">
+          <p className="text-base font-bold uppercase tracking-[0.12em] text-background/70">
             Find us
           </p>
-          <div className="mt-5 space-y-4 text-base leading-7 text-background/80">
-            <div className="mb-4 overflow-hidden rounded-lg border border-background/15">
+          <div className="mt-5 space-y-4 text-lg leading-8 text-background/80">
+            <div className="overflow-hidden rounded-lg border border-background/15">
               <iframe
                 title="Fairgrounds Dental Practice map"
                 src="https://www.google.com/maps?q=200+Fairgrounds+Dr,+Vallejo,+CA+94589&output=embed"
-                className="h-40 w-full"
+                className="h-52 w-full md:h-72"
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
               />
@@ -242,46 +243,16 @@ export function Footer() {
               target="_blank"
               rel="noreferrer"
               data-testid="link-footer-directions"
-              className="focus-ring inline-flex min-h-11 items-center gap-2 rounded-lg border border-background/15 px-3 py-2 text-sm font-bold text-background transition-colors hover:bg-background/10"
+              className="focus-ring inline-flex min-h-11 items-center gap-2 rounded-lg border border-background/15 px-4 py-2 text-base font-bold text-background transition-colors hover:bg-background/10"
             >
               <Navigation className="size-4 text-accent" />
               Google Maps directions
             </a>
-            <div className="flex w-full gap-3 rounded-lg border border-background/15 px-4 py-3">
-              <Clock3 className="mt-1 size-4 shrink-0 text-accent" />
-              <div className="min-w-0 flex-1">
-                <p className="text-sm font-bold uppercase tracking-[0.12em] text-background/65">
-                  Office hours
-                </p>
-                <dl className="mt-2 grid w-full gap-x-6 gap-y-1.5 text-base sm:grid-cols-2">
-                  <div className="flex justify-between gap-5">
-                    <dt>Monday</dt>
-                    <dd className="font-semibold text-background">8am–5pm</dd>
-                  </div>
-                  <div className="flex justify-between gap-5">
-                    <dt>Tuesday</dt>
-                    <dd className="font-semibold text-background">8am–5pm</dd>
-                  </div>
-                  <div className="flex justify-between gap-5">
-                    <dt>Wednesday</dt>
-                    <dd className="font-semibold text-background">8am–5pm</dd>
-                  </div>
-                  <div className="flex justify-between gap-5">
-                    <dt>Thursday</dt>
-                    <dd className="font-semibold text-background">8am–5pm</dd>
-                  </div>
-                  <div className="flex justify-between gap-5 sm:col-span-2">
-                    <dt>Friday–Sunday</dt>
-                    <dd className="font-semibold text-background">Closed</dd>
-                  </div>
-                </dl>
-              </div>
-            </div>
           </div>
         </div>
       </div>
       <div className="border-t border-background/15">
-        <div className="container-wide flex flex-wrap justify-between gap-3 py-5 text-xs text-background/45">
+        <div className="container-wide flex flex-wrap justify-between gap-3 py-6 text-sm text-background/55">
           <span>© {new Date().getFullYear()} Fairgrounds Dental Practice</span>
           <span>Vallejo, California</span>
         </div>
@@ -350,7 +321,7 @@ export function PageIntro({
       <div className="container-wide relative py-14 sm:py-20 lg:py-24">
         <div className="max-w-3xl animate-rise">
           <p className="text-sm font-bold uppercase text-primary">{eyebrow}</p>
-          <h1 className="mt-4 text-[2.75rem] font-bold leading-tight text-foreground sm:text-5xl lg:text-6xl">
+          <h1 className="font-logo mt-4 text-[2.75rem] font-extrabold leading-tight text-foreground sm:text-5xl lg:text-6xl">
             {title}
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-8 text-muted-foreground">

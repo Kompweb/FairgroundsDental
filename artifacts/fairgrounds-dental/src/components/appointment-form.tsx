@@ -1,6 +1,50 @@
 import { type FormEvent, useState } from "react";
 import { CalendarDays, Check, Clock3, LoaderCircle, Send } from "lucide-react";
 
+/**
+ * Website form intake.
+ *
+ * Submissions are posted to a Google Apps Script web app that appends one
+ * row per request to the FGD-Dashboard Google Sheet.
+ * Paste the deployed web app URL below (or set VITE_FORMS_ENDPOINT).
+ */
+const SHEET_WEB_APP_URL =
+  "https://script.google.com/macros/s/AKfycby-QbWuyullCZN3ZsjP7-8Y83tJb7_SaAuNmLVmB-VhFgJWYoY45cmkN6LlXo-GHKqpKQ/exec";
+
+const SHEET_ENDPOINT: string =
+  (import.meta.env.VITE_FORMS_ENDPOINT as string | undefined) ||
+  SHEET_WEB_APP_URL;
+
+type LeadFields = {
+  name: string;
+  phone: string;
+  email: string;
+  preferredDate: string;
+  preferredTime: string;
+  service: string;
+  message: string;
+};
+
+async function sendToSheet(fields: LeadFields): Promise<void> {
+  if (!SHEET_ENDPOINT) {
+    console.warn(
+      "No form endpoint configured - this submission was not saved to the sheet.",
+    );
+    return;
+  }
+
+  await fetch(SHEET_ENDPOINT, {
+    method: "POST",
+    mode: "no-cors",
+    headers: { "Content-Type": "text/plain;charset=utf-8" },
+    body: JSON.stringify({
+      ...fields,
+      form: "Appointment request",
+      page: typeof window === "undefined" ? "" : window.location.pathname,
+    }),
+  });
+}
+
 const services = [
   "General or family dentistry",
   "Exam and cleaning",
@@ -83,7 +127,9 @@ export function AppointmentForm({ compact = false }: { compact?: boolean }) {
       return;
     }
     setStatus("submitting");
-    window.setTimeout(() => setStatus("success"), 650);
+    sendToSheet(form)
+      .catch(console.error)
+      .finally(() => setStatus("success"));
   };
   if (status === "success") {
     return (

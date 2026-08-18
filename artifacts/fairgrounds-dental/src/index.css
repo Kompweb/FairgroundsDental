@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=Poppins:wght@700;800;900&display=swap");
 @import "tailwindcss";
 @import "tw-animate-css";
 @plugin "@tailwindcss/typography";
@@ -63,6 +63,7 @@
   --app-font-sans: "DM Sans", ui-sans-serif, sans-serif;
   --app-font-serif: "Instrument Serif", Georgia, serif;
   --app-font-mono: "DM Sans", ui-monospace, monospace;
+  --app-font-logo: "Poppins", ui-sans-serif, sans-serif;
   --radius: 0.75rem;
   --shadow-soft: 0 12px 34px hsl(201 37% 18% / 0.1);
   --shadow-card:
@@ -119,6 +120,9 @@
 @layer utilities {
   .font-display {
     font-family: var(--app-font-serif);
+  }
+  .font-logo {
+    font-family: var(--app-font-logo);
   }
   .text-balance {
     text-wrap: balance;
